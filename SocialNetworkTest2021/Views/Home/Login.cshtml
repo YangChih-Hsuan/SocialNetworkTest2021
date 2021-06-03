@@ -1,11 +1,11 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
     Layout = null;
 }
 <!DOCTYPE html>
 <html>
 <head>
+    @Scripts.Render("~/bundles/jquery")
     <meta charset="utf-8" />
     <title>會員登入</title>
     <style>
@@ -14,17 +14,130 @@
             background-color: #d68d8d;
         }
 
-        .loginb_backgtound {
-            width: 30%;
-            height: 40%;
-            background: rbga(255,255,255,0.5);
-            border: 2px solid #FFFFFF;
-            position: absolute;
+        .login_backgtound {
+            width: 500px;
+            height: 380px;
+            background-color: #FFFFFF52;
         }
+
+        .login_border {
+            width: 500px;
+            height: 380px;
+            margin: auto;
+            margin-top: 15%;
+            border: 2px solid #FFFFFF;
+            border-radius: 10px;
+        }
+
+        h1 {
+            font-size: 40pt;
+            margin: auto;
+            padding-left: 30%;
+            padding-top: 8%;
+            padding-bottom: 3%;
+            color: #a21717;
+        }
+
+        .inputbox {
+            width: 350px;
+            height: 50px;
+            background-color: #FFFFFF;
+            color: #acacac;
+            border-radius: 10px;
+            margin: auto;
+            padding-left: 15px;
+            margin-top: 3%;
+        }
+
+        .inputbox_text {
+            font-size: 20pt;
+            padding-left: 15px;
+            line-height: 50px;
+        }
+
+        .btn_login {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn_login_text {
+            color: #be5959;
+            font-size: 18pt;
+            text-align: center;
+            line-height: 50px;
+            font-weight: 800;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        input[type="text"] {
+            width: 330px;
+            height: 45px;
+            border-radius: 10px;
+            border: none;
+            font-size: 15pt;
+            margin-top: 2px;
+            outline: 0;
+        }
+
+        input[type="button"] {
+            width: 130px;
+            height: 50px;
+            font-size: 15pt;
+            border: none;
+            border-radius: 10px;
+            background-color: #FFFFFF;
+            color: #be5959;
+            font-weight: 700;
+        }
+
+            input[type="button"]:hover {
+                border: 1px solid #be5959;
+            }
     </style>
 </head>
 <body>
-    <div class="loginb_backgtound"></div>
+    <div class="login_border">
+        <div class="login_backgtound">
+            <h1>L O G O</h1>
+            <div class="inputbox">
+                <input type="text" placeholder="請輸入帳號" id="account">
+            </div>
+            <div class="inputbox">
+                <input type="text" placeholder="請輸入密碼" id="password">
+            </div>
+            <div class="btn_login">
+                <input type="button" value="登入" onclick="login()">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(() => {
+            //進網頁先載入API
+        });
+        function login() {
+            $.post("/API/MemberAPI/Login",
+                {
+                    Account: $("#account").val(),
+                    Password: $("#password").val()
+                },
+                (res) => {
+                    if (res.ResultCode == 1)
+                        alert(res.Message);
+                }
+            );
+        }
+        //function login() {
+        //    const getaccount = document.getElementById("account");
+        //    const account = getaccount.value;
+        //    const getpassword = document.getElementById("password");
+        //    const password = getpassword.value;
+        //    alert("帳號:" + account + "\n密碼:" + password);
+        //}
+    </script>
 </body>
 </html>
-
