@@ -120,24 +120,21 @@
             //進網頁先載入API
         });
         function login() {
-            $.post("/API/MemberAPI/Login",
+            $.post("/API/MemberAPI/LoginV2",
                 {
                     Account: $("#account").val(),
                     Password: $("#password").val()
                 },
                 (res) => {
                     if (res.ResultCode == 1)
+                        // 導主頁
+
+                        alert(res.Message);
+                    else
                         alert(res.Message);
                 }
             );
         }
-        //function login() {
-        //    const getaccount = document.getElementById("account");
-        //    const account = getaccount.value;
-        //    const getpassword = document.getElementById("password");
-        //    const password = getpassword.value;
-        //    alert("帳號:" + account + "\n密碼:" + password);
-        //}
     </script>
 </body>
 </html>

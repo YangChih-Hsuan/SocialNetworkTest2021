@@ -93,3 +93,8 @@ C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\obj\
 C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\obj\Debug\SocialNetworkTest2021.csproj.CopyComplete
 C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\obj\Debug\SocialNetworkTest2021.dll
 C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\obj\Debug\SocialNetworkTest2021.pdb
+C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\bin\EntityFramework.dll
+C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\bin\EntityFramework.SqlServer.dll
+C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\bin\EntityFramework.xml
+C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\bin\EntityFramework.SqlServer.xml
+C:\Users\leo.zheng\source\repos\SocialNetworkTest2021\SocialNetworkTest2021\bin\zh-Hant\EntityFramework.resources.dll
