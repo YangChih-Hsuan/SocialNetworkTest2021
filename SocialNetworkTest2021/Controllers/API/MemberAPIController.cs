@@ -1,5 +1,7 @@
 ﻿using SocialNetworkTest2021.Model;
 using SocialNetworkTest2021.ViewModel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
@@ -13,7 +15,7 @@ namespace SocialNetworkTest2021.Controllers.API
         {
             var memberdb = new SocialNetworkTest2021Entities();
             var account = memberdb.Member.Where(w => w.Account == loginViewModel.Account && w.Password == loginViewModel.Password).FirstOrDefault();
-            string response ="";
+            string response = "";
             string b = "";
             string a = "";
             if (account != null)
@@ -60,5 +62,7 @@ namespace SocialNetworkTest2021.Controllers.API
 
             return result;
         }
+
+        
     }
 }
