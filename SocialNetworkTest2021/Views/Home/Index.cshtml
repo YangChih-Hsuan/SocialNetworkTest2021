@@ -10,28 +10,16 @@
     <title>首頁</title>
 </head>
 <body>
-    @*<div>
-       
+    <div>
+        <input type="button" value="登入頁" onclick="login()">
     </div>
     <script type="text/javascript">
-        $(document).ready(() => {
-            //進網頁先載入API
-        });
-        function login() {
-            $.post("/API/MemberAPI/LoginV2",
-                {
-                    Account: $("#account").val(),
-                    Password: $("#password").val()
-                },
-                (res) => {
-                    if (res.ResultCode == 1)
-                        // 導主頁
-                        alert(res.Message);
-                    else
-                        alert(res.Message);
-                }
-            );
-        }
-    </script>*@
+            $(document).ready(() => {
+                //進網頁先載入API
+            });
+            function login() {
+                window.location.href = '/Home/Login';
+            }
+        </script>
 </body>
 </html>
