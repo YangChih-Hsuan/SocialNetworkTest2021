@@ -113,6 +113,9 @@
             <div class="btn_login">
                 <input type="button" value="登入" onclick="login()">
             </div>
+            <div class="btn_login">
+                <input type="button" value="新會員註冊" onclick="Singup()">
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -128,11 +131,32 @@
                 (res) => {
                     if (res.ResultCode == 1)
                         // 導主頁
-                        alert(res.Message);
+                        //alert(res.Message);
+                        window.location.href = '/Home/Index';
                     else
                         alert(res.Message);
                 }
             );
+        }
+        function Singup() {
+            window.confirm("新會員註冊");
+            //$.post("/API/MemberAPI/Singup",
+            //    {
+            //        Account: $("#account").val(),
+            //        Password: $("#password").val(),
+            //        PasswordConfirm: $("#passwordConfirm").val(),
+            //        Mail: $("#mail").val(),
+            //        VerificationCode: $("#verificationCode").val()
+            //    },
+            //    (res) => {
+            //        if (res.ResultCode == 1)
+            //            // 導主頁
+            //            alert(res.Message);
+            //            //window.location.href = '/Home/Index';
+            //        else
+            //            alert(res.Message);
+            //    }
+            //);
         }
     </script>
 </body>
