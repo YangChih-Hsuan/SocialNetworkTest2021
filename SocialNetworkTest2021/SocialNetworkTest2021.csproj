@@ -183,7 +183,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Image\A.png" />
+    <Content Include="Image\Close.svg" />
+    <Content Include="Image\TestImage.png" />
     <Content Include="Model\SocialNetworkDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>SocialNetworkDBModel.Context.cs</LastGenOutput>
