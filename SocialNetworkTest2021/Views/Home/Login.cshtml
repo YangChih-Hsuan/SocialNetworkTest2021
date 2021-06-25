@@ -53,10 +53,10 @@
         }
 
         .singupInputBox {
-            width: 400px;
+            width: 450px;
             height: 50px;
             background-color: #FFFFFF;
-            border: 1px solid #acacac;
+            border: 1px solid #F2A1A1;
             color: #acacac;
             border-radius: 5px;
         }
@@ -123,9 +123,11 @@
             outline: 0;
             padding-left: 15px;
         }
+
         .input_login {
             width: 330px;
         }
+
         .input_sinup {
             width: 380px;
         }
@@ -190,20 +192,38 @@
 
         .singupText {
             font-size: 16pt;
-            color: #000000;
+            color: #4E4E4E;
+            position: relative;
+            bottom: 50%;
+            right: 5%;
+            font-weight: 600;
         }
 
         .singupTextBackground {
-            width: 100px;
-            height: 20px;
+            width: 90%;
+            height: 70%;
             background-color: #FFE5E5;
             border-radius: 25px;
-            margin-right: 3%;
+            position: relative;
+            top: 20%;
         }
+
         .singupContent {
             display: flex;
             align-items: center;
             margin: 3% 10%;
+        }
+
+        .singupInputText {
+            width: 100px;
+            height: 30px;
+        }
+        .lineStyle {
+            width: 80%;
+            height: 1px;
+            background-color: #dadada;
+            position: relative;
+            left: 10%;
         }
     </style>
 </head>
@@ -229,31 +249,51 @@
                         <div onclick="closeBox()"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
                     </div>
                     <div class="singupContent">
-                        <div class="singupTextBackground"><a class="singupText">會員名稱</a></div>
+                        <div class="singupInputText">
+                            <div class="singupTextBackground">
+                                <a class="singupText">會員名稱</a>
+                            </div>
+                        </div>
                         <div class="singupInputBox">
                             <input class="input_sinup" type="text" placeholder="請輸入姓名" id="name" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
+                        <div class="singupInputText">
+                            <div class="singupTextBackground">
+                                <a class="singupText">會員帳號</a>
+                            </div>
+                        </div>
                         <div class="singupInputBox">
                             <input class="input_sinup" type="text" placeholder="請輸入帳號" id="singup_account" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
+                        <div class="singupInputText">
+                            <div class="singupTextBackground">
+                                <a class="singupText">會員密碼</a>
+                            </div>
+                        </div>
                         <div class="singupInputBox">
                             <input class="input_sinup" type="text" placeholder="請輸入密碼" id="singup_password" autocomplete="off" maxlength="100">
                         </div>
                     </div>
                     <div class="singupContent">
+                        <div class="singupInputText">
+                            <div class="singupTextBackground">
+                                <a class="singupText">電子郵件</a>
+                            </div>
+                        </div>
                         <div class="singupInputBox">
-                            <input class="input_sinup" type="text" placeholder="請輸入Email" id="mail" autocomplete="off" maxlength="100">
+                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100">
                         </div>
                     </div>
+                    <div class="lineStyle"></div>
                     <div class="btn_div">
                         <div><input class="btn_singup" type="button" value="註冊" onclick="Singup()"></div>
                     </div>
-                    </div>
                 </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript">

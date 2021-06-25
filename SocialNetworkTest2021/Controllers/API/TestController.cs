@@ -62,6 +62,7 @@ namespace SocialNetworkTest2021.Controllers.API
             memberdb.SaveChanges();
         }
 
+        public NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         [HttpPost, Route("DapperTest")]
         public void DapperTest()
         {
@@ -105,6 +106,7 @@ namespace SocialNetworkTest2021.Controllers.API
                 string insertStrSql = @"INSERT SocialNetworkTest2021.dbo.Member
                                         VALUES ( @Account, @NickName, @Password, @Mail, @CreateDate)";
                 int insertCount = conn.Execute(insertStrSql, newMember);
+                logger.Debug("**** Debug ***");
             }
         }
     }
