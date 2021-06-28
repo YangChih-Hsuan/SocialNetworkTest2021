@@ -46,19 +46,9 @@
             height: 50px;
             background-color: #FFFFFF;
             color: #acacac;
-            border: 1px solid #D68D8D;
             border-radius: 5px;
             margin: auto;
             margin-top: 3%;
-        }
-
-        .singupInputBox {
-            width: 450px;
-            height: 50px;
-            background-color: #FFFFFF;
-            border: 1px solid #F2A1A1;
-            color: #acacac;
-            border-radius: 5px;
         }
 
         .inputbox_text {
@@ -81,7 +71,7 @@
             border-radius: 5px;
             background-color: #F2A1A1;
             color: #FFFFFF;
-            font-weight: 500;
+            font-weight: 600;
         }
 
             .btn_loginPage:hover {
@@ -117,19 +107,23 @@
         input[type="text"] {
             height: 45px;
             border-radius: 5px;
-            border: none;
+            border: 1px solid #FFE5E5;
             font-size: 15pt;
             margin-top: 2px;
             outline: 0;
             padding-left: 15px;
         }
 
+            input[type="text"]:focus {
+                border: 1px solid #F2A1A1;
+            }
+
         .input_login {
             width: 330px;
         }
 
         .input_sinup {
-            width: 380px;
+            width: 430px;
         }
 
         input[type="button"] {
@@ -137,7 +131,7 @@
         }
 
         /*POP背景遮罩*/
-        #popLayer {
+        .popLayer {
             display: none;
             background-color: #00000052;
             position: absolute;
@@ -148,11 +142,9 @@
         }
 
         /*POP彈窗樣式*/
-        #popBox {
+        .popBox {
             display: none;
             background-color: #FFFFFF;
-            width: 700px;
-            height: 680px;
             border: 1px solid #D68D8D;
             border-radius: 10px;
             position: fixed;
@@ -161,6 +153,16 @@
             left: 0;
             bottom: 0;
             margin: auto;
+        }
+
+        .signupStyle {
+            width: 700px;
+            height: 680px;
+        }
+
+        .signupTest {
+            width: 300px;
+            height: 300px;
         }
 
         .topBar {
@@ -218,6 +220,7 @@
             width: 100px;
             height: 30px;
         }
+
         .lineStyle {
             width: 80%;
             height: 1px;
@@ -225,6 +228,22 @@
             position: relative;
             left: 10%;
         }
+
+        .forgotPassword {
+            display: flex;
+            justify-content: center;
+        }
+
+        .btn_forgotPassword {
+            background: none;
+            color: #F2A1A1;
+            font-size: 14pt;
+            margin-top: 3%;
+        }
+
+            .btn_forgotPassword:hover {
+                color: #D68D8D;
+            }
     </style>
 </head>
 <body>
@@ -237,16 +256,26 @@
             <div class="inputbox">
                 <input class="input_login" type="text" placeholder="請輸入密碼" id="password" autocomplete="off" maxlength="100">
             </div>
+            <div id="forgotPassword" class="forgotPassword">
+                <input class="btn_forgotPassword" type="button" value="忘記密碼?" onclick="pop('forgotPassword', true)">
+                <div class="popLayer"></div>
+                <div class="popBox signupTest">
+                    <div class="topBar">
+                        <div class="popTitle"><a>忘記密碼</a></div>
+                        <div onclick="pop('forgotPassword', false)"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
+                    </div>
+                </div>
+            </div>
             <div class="btn_div">
                 <div><input class="btn_loginPage" type="button" value="登入" onclick="login()"></div>
             </div>
-            <div class="btn_div">
-                <div><input class="btn_loginPage" type="button" value="新會員註冊" onclick="popBox()"></div>
-                <div id="popLayer"></div>
-                <div id="popBox">
+            <div class="btn_div" id="signup">
+                <div><input class="btn_loginPage" type="button" value="新會員註冊" onclick="pop('signup', true)"></div>
+                <div class="popLayer"></div>
+                <div class="popBox signupStyle">
                     <div class="topBar">
                         <div class="popTitle"><a>新會員註冊</a></div>
-                        <div onclick="closeBox()"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
+                        <div onclick="pop('signup', false)"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
                     </div>
                     <div class="singupContent">
                         <div class="singupInputText">
@@ -254,7 +283,7 @@
                                 <a class="singupText">會員名稱</a>
                             </div>
                         </div>
-                        <div class="singupInputBox">
+                        <div>
                             <input class="input_sinup" type="text" placeholder="請輸入姓名" id="name" autocomplete="off" maxlength="20">
                         </div>
                     </div>
@@ -264,7 +293,7 @@
                                 <a class="singupText">會員帳號</a>
                             </div>
                         </div>
-                        <div class="singupInputBox">
+                        <div>
                             <input class="input_sinup" type="text" placeholder="請輸入帳號" id="singup_account" autocomplete="off" maxlength="20">
                         </div>
                     </div>
@@ -274,7 +303,7 @@
                                 <a class="singupText">會員密碼</a>
                             </div>
                         </div>
-                        <div class="singupInputBox">
+                        <div>
                             <input class="input_sinup" type="text" placeholder="請輸入密碼" id="singup_password" autocomplete="off" maxlength="100">
                         </div>
                     </div>
@@ -284,7 +313,7 @@
                                 <a class="singupText">電子郵件</a>
                             </div>
                         </div>
-                        <div class="singupInputBox">
+                        <div>
                             <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100">
                         </div>
                     </div>
@@ -382,21 +411,11 @@
                 }
             );
         };
-
-        /*彈窗*/
-        function popBox() {
-            var popBox = document.getElementById("popBox");
-            var popLayer = document.getElementById("popLayer");
-            popBox.style.display = "block";
-            popLayer.style.display = "block";
-        };
-
-        /*關閉彈窗*/
-        function closeBox() {
-            var popBox = document.getElementById("popBox");
-            var popLayer = document.getElementById("popLayer");
-            popBox.style.display = "none";
-            popLayer.style.display = "none";
+        /*POP*/
+        function pop(containerID, ispop) {
+            var popBox = $('#' + containerID + '> .popBox')[0];
+            var popLayer = $('#' + containerID + '> .popLayer')[0];
+            popBox.style.display = popLayer.style.display = ispop ? "block" : "none";
         }
     </script>
 </body>
