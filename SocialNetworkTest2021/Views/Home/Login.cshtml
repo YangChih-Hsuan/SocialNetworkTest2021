@@ -7,7 +7,7 @@
 <head>
     @Scripts.Render("~/bundles/jquery")
     <meta charset="utf-8" />
-    <title>會員登入</title>
+    <title>IKKON</title>
     <style>
         html {
             height: 100%;
@@ -16,7 +16,7 @@
 
         body {
             font-family: Arial,'Microsoft JhengHei';
-            background-color: #FFE5E5;
+            background-color: #FCD4D5;
             height: 100%;
             margin: 0;
         }
@@ -29,16 +29,17 @@
         }
 
         .loginBox {
-            padding-top: 50%;
+            padding-top: 35%;
         }
 
         .logo {
             font-size: 40pt;
             margin: auto;
-            padding-left: 30%;
+            display: flex;
+            justify-content: center;
             padding-top: 8%;
             padding-bottom: 3%;
-            color: #D68D8D;
+            color: #f2a1a1;
         }
 
         .inputbox {
@@ -107,7 +108,7 @@
         input[type="text"] {
             height: 45px;
             border-radius: 5px;
-            border: 1px solid #FFE5E5;
+            border: 1px solid #FCD4D5;
             font-size: 15pt;
             margin-top: 2px;
             outline: 0;
@@ -160,11 +161,6 @@
             height: 680px;
         }
 
-        .signupTest {
-            width: 300px;
-            height: 300px;
-        }
-
         .topBar {
             height: 50px;
             display: flex;
@@ -204,7 +200,7 @@
         .singupTextBackground {
             width: 90%;
             height: 70%;
-            background-color: #FFE5E5;
+            background-color: #FCD4D5;
             border-radius: 25px;
             position: relative;
             top: 20%;
@@ -234,6 +230,11 @@
             justify-content: center;
         }
 
+        .forgotPasswordWindow {
+            width: 300px;
+            height: 300px;
+        }
+
         .btn_forgotPassword {
             background: none;
             color: #F2A1A1;
@@ -244,31 +245,74 @@
             .btn_forgotPassword:hover {
                 color: #D68D8D;
             }
+
+        .loginError {
+            width: 300px;
+            height: 150px;
+        }
+
+        .btn_loginError {
+            width: 130px;
+            height: 50px;
+            font-size: 15pt;
+            border-radius: 5px;
+            background-color: #F2A1A1;
+            color: #FFFFFF;
+            font-weight: 700;
+        }
+
+            .btn_loginError:hover {
+                border: 1px solid #FFFFFF;
+            }
+
+        .loginErrorText {
+            display: flex;
+            justify-content: center;
+            margin-top: 10%;
+            font-size: 15pt;
+            color: #be5959;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="login_background">
         <div class="loginBox">
-            <a class="logo">L O G O</a>
+            <a class="logo">I K K O N</a>
             <div class="inputbox">
                 <input class="input_login" type="text" placeholder="請輸入帳號" id="account" autocomplete="off" maxlength="20">
             </div>
             <div class="inputbox">
                 <input class="input_login" type="text" placeholder="請輸入密碼" id="password" autocomplete="off" maxlength="100">
             </div>
+
+            <!--忘記密碼-->
             <div id="forgotPassword" class="forgotPassword">
                 <input class="btn_forgotPassword" type="button" value="忘記密碼?" onclick="pop('forgotPassword', true)">
                 <div class="popLayer"></div>
-                <div class="popBox signupTest">
+                <div class="popBox forgotPasswordWindow">
                     <div class="topBar">
                         <div class="popTitle"><a>忘記密碼</a></div>
                         <div onclick="pop('forgotPassword', false)"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
                     </div>
                 </div>
             </div>
+
+            <!--登入-->
             <div class="btn_div">
                 <div><input class="btn_loginPage" type="button" value="登入" onclick="login()"></div>
             </div>
+            <div id="loginError">
+                <div class="popLayer"></div>
+                <div class="popBox loginError">
+                    <a class="loginErrorText">帳號或密碼錯誤</a>
+                    <div class="btn_div">
+                        <input class="btn_loginError" type="button" value="確認" onclick="pop('loginError', false)">
+                    </div>
+                </div>
+            </div>
+
+            <!--註冊-->
             <div class="btn_div" id="signup">
                 <div><input class="btn_loginPage" type="button" value="新會員註冊" onclick="pop('signup', true)"></div>
                 <div class="popLayer"></div>
@@ -377,7 +421,8 @@
                         //alert(res.Message);
                         window.location.href = "/Home/Index";
                     else
-                        alert(res.Message);
+                        pop('loginError', true);
+                    //alert(res.Message);
                 }
             );
         };
