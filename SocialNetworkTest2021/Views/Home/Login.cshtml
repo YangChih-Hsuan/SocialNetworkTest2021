@@ -200,7 +200,7 @@
         .singupTextBackground {
             width: 90%;
             height: 70%;
-            background-color: #FCD4D5;
+            background-color: #ffe9e9;
             border-radius: 25px;
             position: relative;
             top: 20%;
@@ -246,12 +246,12 @@
                 color: #D68D8D;
             }
 
-        .loginError {
+        .Error {
             width: 300px;
             height: 150px;
         }
 
-        .btn_loginError {
+        .btn_Error {
             width: 130px;
             height: 50px;
             font-size: 15pt;
@@ -260,12 +260,11 @@
             color: #FFFFFF;
             font-weight: 700;
         }
-
-            .btn_loginError:hover {
+            .btn_Error:hover {
                 border: 1px solid #FFFFFF;
             }
 
-        .loginErrorText {
+        .ErrorText {
             display: flex;
             justify-content: center;
             margin-top: 10%;
@@ -304,10 +303,10 @@
             </div>
             <div id="loginError">
                 <div class="popLayer"></div>
-                <div class="popBox loginError">
-                    <a class="loginErrorText">帳號或密碼錯誤</a>
+                <div class="popBox Error">
+                    <a class="ErrorText">帳號或密碼錯誤</a>
                     <div class="btn_div">
-                        <input class="btn_loginError" type="button" value="確認" onclick="pop('loginError', false)">
+                        <input class="btn_Error" type="button" value="確認" onclick="pop('loginError', false)">
                     </div>
                 </div>
             </div>
@@ -367,6 +366,15 @@
                     </div>
                 </div>
             </div>
+            <div id="supingError">
+                <div class="popLayer"></div>
+                <div class="popBox Error">
+                    <a class="ErrorText">資料未填寫完整</a>
+                    <div class="btn_div">
+                        <input class="btn_Error" type="button" value="確認" onclick="pop('supingError', false)">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script type="text/javascript">
@@ -418,24 +426,26 @@
                 (res) => {
                     if (res.ResultCode == 1)
                         // 導主頁
-                        //alert(res.Message);
                         window.location.href = "/Home/Index";
                     else
                         pop('loginError', true);
-                    //alert(res.Message);
                 }
             );
         };
 
         function Singup() {
             if ($("#singup_account").val() == null || $("#singup_account").val() == "") {
-                alert("您尚未填寫帳號!");
+                //alert("您尚未填寫帳號!");
+                pop('supingError', true);
             } else if ($("#singup_password").val() == null || $("#singup_password").val() == "") {
-                alert("您尚未填寫密碼!");
+                //alert("您尚未填寫密碼!");
+                pop('supingError', true);
             } else if ($("#name").val() == null || $("#name").val() == "") {
-                alert("您尚未填寫姓名!");
+                //alert("您尚未填寫姓名!");
+                pop('supingError', true);
             } else if ($("#mail").val() == null || $("#mail").val() == "") {
-                alert("您尚未填寫mail!");
+                //alert("您尚未填寫mail!");
+                pop('supingError', true);
             }
             $.post("/API/MemberAPI/Singup",
                 {

@@ -8,10 +8,98 @@
     @Scripts.Render("~/bundles/jquery")
     <meta charset="utf-8" />
     <title>IKKON</title>
+    <style>
+        html {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: Arial,'Microsoft JhengHei';
+            background-color: #F5F5F5;
+            /*height: 5000px;*/
+            margin: 0;
+        }
+
+        .div_menu {
+            background-color: #ffffff;
+            width: 20%;
+            height: 100%;
+            position: fixed;
+            top: 0px;
+            left: 0px;
+        }
+        .div_content {
+            height: 100%;
+            position: absolute;
+            left: 22%;
+            right: 28.5%;
+        }
+        .div_right {
+            width: 25%;
+            height: 100%;
+            position: fixed;
+            top: 0px;
+            right: 30px;
+        }
+        .div_banner {
+            background-color: #ffffff;
+            width: 100%;
+            height: 150px;
+            margin: 30px auto;
+            border-radius: 5px;
+        }
+        .div_friend {
+            background-color: #ffffff;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+        .div_mypost {
+            background-color: #ffffff;
+            width: 100%;
+            height: 50px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+        .div_post {
+            background-color: #ffffff;
+            width: 100%;
+            height: 85px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+        .logo {
+            font-size: 25pt;
+            display: flex;
+            justify-content: center;
+            padding-top: 8%;
+            padding-bottom: 10%;
+            color: #f2a1a1;
+        }
+    </style>
 </head>
 <body>
-    <div>
-        <input type="button" value="登入頁" onclick="login()">
+    <div class="div_menu">
+        <div class="logo"><a>I K K O N</a></div>
+        <input type="button" value="登出" onclick="login()">
+    </div>
+    <div class="div_content">
+        <div class="div_mypost">
+            <a>mypost</a>
+        </div>
+        <div class="div_post">
+            <a>content</a>
+        </div>
+    </div>
+    <div class="div_right">
+        <div class="div_banner">
+            <a>banner</a>
+            <!--放banner要讓他水平垂直置中在div內，隨窗口變化要避免圖片變形-->
+        </div>
+        <div class="div_friend">
+            <a>friend</a>
+        </div>
     </div>
     <script type="text/javascript">
         $(document).ready(() => {
