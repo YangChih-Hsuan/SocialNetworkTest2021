@@ -1,18 +1,26 @@
-﻿namespace SocialNetworkTest2021.ViewModel
+﻿using System.Collections.Generic;
+
+namespace SocialNetworkTest2021.ViewModel
 {
-    /// <summary>
-    /// Index ViewModel
-    /// </summary>
+    // Index ViewModel
     public class IndexViewModel
     {
-        /// <summary>
-        /// 會員編號
-        /// </summary>
+        public MemberViewModel memberViewModel { get; set; }
+        public List<FriendViewModel> friendViewModel { get; set; }
+    }
+
+    public class MemberViewModel
+    {
+        //會員編號
         public int MemberID { get; set; }
 
-        /// <summary>
-        /// 暱稱
-        /// </summary>
+        //暱稱
         public string NickName { get; set; }
+
+    }
+
+    public class FriendViewModel
+    {
+        public string FriendName { get; set; }
     }
 }

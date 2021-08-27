@@ -217,12 +217,17 @@
             height: 30px;
         }
 
+        .linediv {
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+
         .lineStyle {
             width: 80%;
             height: 1px;
             background-color: #dadada;
-            position: relative;
-            left: 10%;
+            margin-top: 20px;
         }
 
         .forgotPassword {
@@ -248,7 +253,7 @@
 
         .Error {
             width: 300px;
-            height: 150px;
+            height: 200px;
         }
 
         .btn_Error {
@@ -260,6 +265,7 @@
             color: #FFFFFF;
             font-weight: 700;
         }
+
             .btn_Error:hover {
                 border: 1px solid #FFFFFF;
             }
@@ -269,9 +275,28 @@
             justify-content: center;
             margin-top: 10%;
             font-size: 15pt;
-            color: #be5959;
+            color: #FF5A5A;
+            font-weight: 600;
+            text-align: center;
+            height:80px;
+            align-items:center;
+        }
+        .PromptText {
+            color: #BFBFBF;
+            font-size: 12pt;
+        }
+        .btn_Verification {
+            height: 40px;
+            font-size: 15pt;
+            border-radius: 5px;
+            background-color: #F2A1A1;
+            color: #FFFFFF;
             font-weight: 600;
         }
+
+            .btn_Verification:hover {
+                background-color: #D68D8D;
+            }
     </style>
 </head>
 <body>
@@ -304,11 +329,21 @@
             <div id="loginError">
                 <div class="popLayer"></div>
                 <div class="popBox Error">
-                    <a class="ErrorText">帳號或密碼錯誤</a>
+                    <a class="ErrorText">帳號或密碼錯誤<br>請重新輸入</a>
                     <div class="btn_div">
                         <input class="btn_Error" type="button" value="確認" onclick="pop('loginError', false)">
                     </div>
                 </div>
+            </div>
+
+            <!--Google帳號登入-->
+            <div class="btn_div">
+                <div><input class="btn_loginPage" type="button" value="Google帳號登入" onclick=""></div>
+            </div>
+
+            <!--分隔線-->
+            <div class="linediv">
+                <div class="lineStyle"></div>
             </div>
 
             <!--註冊-->
@@ -327,17 +362,19 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入姓名" id="name" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="name" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
-                        <div class="singupInputText">
+                        <div class="singupInputText" style="margin-bottom: 15px">
                             <div class="singupTextBackground">
                                 <a class="singupText">會員帳號</a>
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入帳號" id="singup_account" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="請設定登入帳號" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <br>
+                            <a class="PromptText">限制設定6個以上英文或數字，勿使用特殊符號。</a>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -347,7 +384,17 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入密碼" id="singup_password" autocomplete="off" maxlength="100">
+                            <input class="input_sinup" type="text" placeholder="請設定登入密碼" id="singup_password" autocomplete="off" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="singupContent">
+                        <div class="singupInputText">
+                            <div class="singupTextBackground">
+                                <a class="singupText">確認密碼</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
                         </div>
                     </div>
                     <div class="singupContent">
@@ -356,11 +403,12 @@
                                 <a class="singupText">電子郵件</a>
                             </div>
                         </div>
-                        <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100">
+                        <div style="display:flex; align-items:center;">
+                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;">
+                            <input class="btn_Verification" type="button" value="取得驗證碼">
                         </div>
                     </div>
-                    <div class="lineStyle"></div>
+                    <div class="linediv"><div class="lineStyle"></div></div>
                     <div class="btn_div">
                         <div><input class="btn_singup" type="button" value="註冊" onclick="Singup()"></div>
                     </div>

@@ -1,4 +1,4 @@
-﻿@model IndexViewModel
+﻿@model MemberViewModel
 @{
     ViewBag.Title = "Index";
     Layout = null;
@@ -199,6 +199,14 @@
 
         });
         $(document).ready(() => {
+
+            var data = [1, 2, 3, 4, 5];
+
+            data.forEach(x => {
+                debugger;
+                $('.div_mypost').append(`<a>${x}</a>`);
+            });
+
             //進網頁先載入API
         });
         function login() {
