@@ -131,6 +131,31 @@
             border: none;
         }
 
+        input[type="date"] {
+            height: 45px;
+            border-radius: 5px;
+            border: 1px solid #FCD4D5;
+            font-size: 15pt;
+            margin-top: 2px;
+            outline: 0;
+            padding-left: 12px;
+            padding-right: 5px;
+            background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
+            background: src(~/Image/Close.svg);
+        }
+
+            input[type="date"]:focus {
+                border: 1px solid #F2A1A1;
+            }
+
+            input[type="date"]::-webkit-inner-spin-button {
+                display: none;
+            }
+
+            input[type="date"]::-webkit-calendar-picker-indicator {
+                opacity: 0;
+            }
+
         /*POP背景遮罩*/
         .popLayer {
             display: none;
@@ -159,6 +184,11 @@
         .signupStyle {
             width: 700px;
             height: 680px;
+        }
+
+        .InfoStyle {
+            width: 700px;
+            height: 515px;
         }
 
         .topBar {
@@ -206,6 +236,16 @@
             top: 20%;
         }
 
+        .InfoTextBackground {
+            width: 50px;
+            height: 70%;
+            background-color: #ffe9e9;
+            border-radius: 25px;
+            position: relative;
+            top: 20%;
+            right: 15px;
+        }
+
         .singupContent {
             display: flex;
             align-items: center;
@@ -214,6 +254,10 @@
 
         .singupInputText {
             width: 100px;
+            height: 30px;
+        }
+
+        .InfoInputText {
             height: 30px;
         }
 
@@ -227,7 +271,6 @@
             width: 80%;
             height: 1px;
             background-color: #dadada;
-            margin-top: 20px;
         }
 
         .forgotPassword {
@@ -278,13 +321,15 @@
             color: #FF5A5A;
             font-weight: 600;
             text-align: center;
-            height:80px;
-            align-items:center;
+            height: 80px;
+            align-items: center;
         }
+
         .PromptText {
             color: #BFBFBF;
             font-size: 12pt;
         }
+
         .btn_Verification {
             height: 40px;
             font-size: 15pt;
@@ -297,6 +342,12 @@
             .btn_Verification:hover {
                 background-color: #D68D8D;
             }
+
+        .subTitle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -343,7 +394,7 @@
 
             <!--分隔線-->
             <div class="linediv">
-                <div class="lineStyle"></div>
+                <div class="lineStyle" style="margin-top: 20px;"></div>
             </div>
 
             <!--註冊-->
@@ -409,6 +460,18 @@
                         </div>
                     </div>
                     <div class="linediv"><div class="lineStyle"></div></div>
+                    <div class="singupContent">
+                        <div class="singupInputText" style="margin-bottom: 15px">
+                            <div class="singupTextBackground">
+                                <a class="singupText">驗 證 碼</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <br>
+                            <a class="PromptText">請至電子郵件收取信件，取得驗證碼以完成註冊。</a>
+                        </div>
+                    </div>
                     <div class="btn_div">
                         <div><input class="btn_singup" type="button" value="註冊" onclick="Singup()"></div>
                     </div>
@@ -420,6 +483,61 @@
                     <a class="ErrorText">資料未填寫完整</a>
                     <div class="btn_div">
                         <input class="btn_Error" type="button" value="確認" onclick="pop('supingError', false)">
+                    </div>
+                </div>
+            </div>
+            <!--會員資料填寫-->
+            <div class="btn_div" id="MemberInfo">
+                <div><input class="btn_loginPage" type="button" value="會員資料POPTest" onclick="pop('MemberInfo', true)"></div>
+                <div class="popLayer"></div>
+                <div class="popBox InfoStyle">
+                    <div class="topBar">
+                        <div class="popTitle"><a>填寫會員資料</a></div>
+                        <div onclick="pop('MemberInfo', false)"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
+                    </div>
+                    <div class="subTitle"><a class="PromptText">限制設定6個以上英文或數字，勿使用特殊符號。</a></div>
+                    <div class="singupContent">
+                        <div class="InfoInputText">
+                            <div class="InfoTextBackground">
+                                <a class="singupText">生日</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="date" id="name" autocomplete="off" maxlength="20" value="1995-06-15">
+                        </div>
+                    </div>
+                    <div class="singupContent">
+                        <div class="InfoInputText" style="margin-bottom: 15px">
+                            <div class="InfoTextBackground">
+                                <a class="singupText">興趣</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="text" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                        </div>
+                    </div>
+                    <div class="singupContent">
+                        <div class="InfoInputText">
+                            <div class="InfoTextBackground">
+                                <a class="singupText">工作</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="text" id="singup_password" autocomplete="off" maxlength="100">
+                        </div>
+                    </div>
+                    <div class="singupContent">
+                        <div class="InfoInputText">
+                            <div class="InfoTextBackground">
+                                <a class="singupText">學歷</a>
+                            </div>
+                        </div>
+                        <div>
+                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
+                        </div>
+                    </div>
+                    <div class="btn_div">
+                        <div><input class="btn_singup" type="button" value="完成" onclick="pop('MemberInfo', false)"></div>
                     </div>
                 </div>
             </div>

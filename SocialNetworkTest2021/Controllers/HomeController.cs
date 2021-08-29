@@ -30,7 +30,7 @@ namespace SocialNetworkTest2021.Controllers
                 }
             };
 
-            TempData["Message"] = "TempData測試資料";
+            TempData["Message"] = memberData.NickName;
             return View(memberData);
         }
 

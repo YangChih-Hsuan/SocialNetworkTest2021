@@ -192,6 +192,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Image\accountphoto.svg" />
     <Content Include="Image\Close.svg" />
+    <Content Include="Image\date.png" />
+    <Content Include="Image\InfoHide.png" />
+    <Content Include="Image\InfoPublic.png" />
     <Content Include="Image\TestImage.png" />
     <Content Include="Model\SocialNetworkDBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

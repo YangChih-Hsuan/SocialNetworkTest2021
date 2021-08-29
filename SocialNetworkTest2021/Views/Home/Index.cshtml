@@ -131,9 +131,9 @@
                 actionlink是超鏈結語法
             -->
             @TempData["Message"]
-            @Html.TextBoxFor(x => Model.NickName)
-            <input type="text" value="@Model.NickName" />
-            @Html.ActionLink(Model.NickName, "About", "Home", new { memberID = Model.MemberID }, null)
+            @*@Html.TextBoxFor(x => Model.NickName)
+            <input type="text" value="@Model.NickName" />*@
+            @*@Html.ActionLink(Model.NickName, "About", "Home", new { memberID = Model.MemberID }, null)*@
             <select class="btn_singout">
                 <option>在線</option>
                 <option>離線</option>
