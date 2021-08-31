@@ -140,20 +140,15 @@
             outline: 0;
             padding-left: 12px;
             padding-right: 5px;
-            background: #fff url(https://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/calendar_2.png) 97% 50% no-repeat;
-            background: src(~/Image/Close.svg);
+
         }
 
             input[type="date"]:focus {
                 border: 1px solid #F2A1A1;
             }
-
-            input[type="date"]::-webkit-inner-spin-button {
-                display: none;
-            }
-
             input[type="date"]::-webkit-calendar-picker-indicator {
-                opacity: 0;
+                background-image: url('/Image/date.png');
+                background-repeat: no-repeat;
             }
 
         /*POP背景遮罩*/
@@ -249,7 +244,8 @@
         .singupContent {
             display: flex;
             align-items: center;
-            margin: 3% 10%;
+            justify-content: center;
+            margin: 3% 9%;
         }
 
         .singupInputText {
@@ -347,6 +343,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+        .InfoIcon {
+            width: 80%;
+            margin-left: 10px;
+        }
+        .InfoInputdiv {
+            display: contents;
         }
     </style>
 </head>
@@ -486,6 +489,7 @@
                     </div>
                 </div>
             </div>
+
             <!--會員資料填寫-->
             <div class="btn_div" id="MemberInfo">
                 <div><input class="btn_loginPage" type="button" value="會員資料POPTest" onclick="pop('MemberInfo', true)"></div>
@@ -502,8 +506,9 @@
                                 <a class="singupText">生日</a>
                             </div>
                         </div>
-                        <div>
-                            <input class="input_sinup" type="date" id="name" autocomplete="off" maxlength="20" value="1995-06-15">
+                        <div class="InfoInputdiv">
+                            <input class="input_sinup" type="date" autocomplete="off" maxlength="20" value="1995-06-15" id="Birth">
+                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -512,8 +517,9 @@
                                 <a class="singupText">興趣</a>
                             </div>
                         </div>
-                        <div>
-                            <input class="input_sinup" type="text" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                        <div class="InfoInputdiv">
+                            <input class="input_sinup" type="text" autocomplete="off" maxlength="20">
+                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -522,8 +528,9 @@
                                 <a class="singupText">工作</a>
                             </div>
                         </div>
-                        <div>
-                            <input class="input_sinup" type="text" id="singup_password" autocomplete="off" maxlength="100">
+                        <div class="InfoInputdiv">
+                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
+                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -532,12 +539,13 @@
                                 <a class="singupText">學歷</a>
                             </div>
                         </div>
-                        <div>
-                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
+                        <div class="InfoInputdiv">
+                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
+                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="btn_div">
-                        <div><input class="btn_singup" type="button" value="完成" onclick="pop('MemberInfo', false)"></div>
+                        <div><input class="btn_singup" type="button" value="完成" onclick="dateTest()"></div>
                     </div>
                 </div>
             </div>
@@ -637,6 +645,20 @@
             var popBox = $('#' + containerID + '> .popBox')[0];
             var popLayer = $('#' + containerID + '> .popLayer')[0];
             popBox.style.display = popLayer.style.display = ispop ? "block" : "none";
+        }
+        function dateTest() {
+            $.post("/API/MemberAPI/Datetest",
+                {
+                    Brithdate: $('#Birth').val()
+                },
+                (res) => {
+                    if (res.ResultCode == 1)
+                        // 導主頁
+                        alert(res.Message);
+                    else
+                        alert(res.Message);
+                }
+            );
         }
     </script>
 </body>
