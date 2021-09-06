@@ -6,6 +6,9 @@
 <html>
 <head>
     @Scripts.Render("~/bundles/jquery")
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
     <meta charset="utf-8" />
     <title>IKKON</title>
     <style>
@@ -140,12 +143,12 @@
             outline: 0;
             padding-left: 12px;
             padding-right: 5px;
-
         }
 
             input[type="date"]:focus {
                 border: 1px solid #F2A1A1;
             }
+
             input[type="date"]::-webkit-calendar-picker-indicator {
                 background-image: url('/Image/date.png');
                 background-repeat: no-repeat;
@@ -244,7 +247,7 @@
         .singupContent {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: left;
             margin: 3% 9%;
         }
 
@@ -344,13 +347,55 @@
             justify-content: center;
             align-items: center;
         }
+
         .InfoIcon {
-            width: 80%;
+            width: 90px;
             margin-left: 10px;
+            right: 0px;
         }
+
         .InfoInputdiv {
             display: contents;
         }
+
+        /*隱藏時間選擇按鈕文字*/
+        #datepicker {
+            width: 45px;
+            height: 45px;
+            text-indent: -999px;
+            overflow: hidden;
+            background: none;
+            margin: auto;
+            position: absolute;
+        }
+
+        .DateText {
+            margin: auto;
+            font-size: 14pt;
+        }
+
+        .DateInput {
+            width: 85px;
+        }
+
+        .DateIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ui-widget-content {
+            background: #FFFFFF;
+            border: none;
+            box-shadow: 1px 1px 3px 1px #0000001c;
+        }
+        .ui-widget-header {
+            border: none;
+            background: #FCD4D5;
+            color: #be5959;
+        }
+            .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+                background: #ffe9e9;
+            }
     </style>
 </head>
 <body>
@@ -470,7 +515,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="" autocomplete="off" maxlength="20" style="margin-bottom:5px">
                             <br>
                             <a class="PromptText">請至電子郵件收取信件，取得驗證碼以完成註冊。</a>
                         </div>
@@ -507,7 +552,14 @@
                             </div>
                         </div>
                         <div class="InfoInputdiv">
-                            <input class="input_sinup" type="date" autocomplete="off" maxlength="20" value="1995-06-15" id="Birth">
+                            @*<input class="input_sinup" type="date" autocomplete="off" maxlength="20" value="1995-06-15" id="Birth">*@
+                            <input type="text" id="year" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">年</a>
+                            <input type="text" id="month" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">月</a>
+                            <input type="text" id="day" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">日</a>
+                            <div class="DateIcon">
+                                <input type="button" id="datepicker">
+                                <img src="~/Image/date.png">
+                            </div>
                             <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
                         </div>
                     </div>
@@ -660,6 +712,22 @@
                 }
             );
         }
+        /*會員資料填寫 日期選擇元件*/
+        $(function () {
+            $("#datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showMonthAfterYear: true,
+                onSelect: function (dateText, inst) {
+                    $("#year").val(inst.selectedYear);
+                    $("#month").val(inst.selectedMonth + 1);
+                    $("#day").val(inst.selectedDay);
+                }
+            });
+            $("#datepicker").on('change', function () {
+                $(this).val("")
+            });
+        });
     </script>
 </body>
 </html>
