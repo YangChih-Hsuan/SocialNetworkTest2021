@@ -383,19 +383,54 @@
             align-items: center;
             justify-content: center;
         }
+
         .ui-widget-content {
             background: #FFFFFF;
             border: none;
             box-shadow: 1px 1px 3px 1px #0000001c;
         }
+
         .ui-widget-header {
             border: none;
             background: #FCD4D5;
-            color: #be5959;
         }
-            .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-                background: #ffe9e9;
+
+            .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+                background: #FFF3F3;
+                border: none;
+                border-radius: 3px;
+                text-align: center;
             }
+
+        .ui-state-default:hover {
+            background: #f2a1a1;
+            color: #FFFFFF;
+        }
+
+        .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
+            width: 35%;
+            border-radius: 5px;
+            margin: 0px 5px;
+            border: none;
+        }
+
+        .ui-datepicker-year::-webkit-scrollbar-thumb {
+            display: none;
+        }
+
+        .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
+            border: none;
+            background: #f2a1a180;
+            top: 3px;
+        }
+
+        .ui-datepicker .ui-datepicker-prev-hover {
+            left: 3px;
+        }
+
+        .ui-datepicker .ui-datepicker-next-hover {
+            right: 3px;
+        }
     </style>
 </head>
 <body>
@@ -712,12 +747,13 @@
                 }
             );
         }
-        /*會員資料填寫 日期選擇元件*/
+        /*日期選擇元件*/
         $(function () {
             $("#datepicker").datepicker({
                 changeMonth: true,
                 changeYear: true,
                 showMonthAfterYear: true,
+                yearRange: '1950:2022',
                 onSelect: function (dateText, inst) {
                     $("#year").val(inst.selectedYear);
                     $("#month").val(inst.selectedMonth + 1);
@@ -727,6 +763,16 @@
             $("#datepicker").on('change', function () {
                 $(this).val("")
             });
+            $.datepicker.regional['zh-TW'] = {
+                dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
+                dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
+                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
+                prevText: "上月",
+                nextText: "次月",
+                weekHeader: "週"
+            };
+            $.datepicker.setDefaults($.datepicker.regional["zh-TW"]);
         });
     </script>
 </body>
