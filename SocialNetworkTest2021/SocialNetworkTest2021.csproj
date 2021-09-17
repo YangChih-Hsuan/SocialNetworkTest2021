@@ -191,8 +191,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Image\accountphoto.svg" />
-    <Content Include="Image\arrow_left.svg" />
-    <Content Include="Image\arrow_right.svg" />
     <Content Include="Image\Close.svg" />
     <Content Include="Image\date.png" />
     <Content Include="Image\InfoHide.png" />

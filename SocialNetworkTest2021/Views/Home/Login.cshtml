@@ -186,7 +186,7 @@
 
         .InfoStyle {
             width: 700px;
-            height: 515px;
+            height: 470px;
         }
 
         .topBar {
@@ -579,7 +579,6 @@
                         <div class="popTitle"><a>填寫會員資料</a></div>
                         <div onclick="pop('MemberInfo', false)"><img class="svg closeIcon" src="~/Image/Close.svg"></div>
                     </div>
-                    <div class="subTitle"><a class="PromptText">限制設定6個以上英文或數字，勿使用特殊符號。</a></div>
                     <div class="singupContent">
                         <div class="InfoInputText">
                             <div class="InfoTextBackground">
@@ -595,7 +594,7 @@
                                 <input type="button" id="datepicker">
                                 <img src="~/Image/date.png">
                             </div>
-                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
+                            <div><img onclick="InfoDate(this)" id="InfoBtn1" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -606,7 +605,7 @@
                         </div>
                         <div class="InfoInputdiv">
                             <input class="input_sinup" type="text" autocomplete="off" maxlength="20">
-                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
+                            <div><img onclick="InfoDate(this)" id="InfoBtn2" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -617,7 +616,7 @@
                         </div>
                         <div class="InfoInputdiv">
                             <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
-                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
+                            <div><img onclick="InfoDate(this)" id="InfoBtn4" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -628,11 +627,11 @@
                         </div>
                         <div class="InfoInputdiv">
                             <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
-                            <div onclick=""><img class="svg InfoIcon" src="~/Image/InfoPublic.png"></div>
+                            <div><img onclick="InfoDate(this)" id="InfoBtn8" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
                     <div class="btn_div">
-                        <div><input class="btn_singup" type="button" value="完成" onclick="dateTest()"></div>
+                        <div><input class="btn_singup" type="button" value="完成" onclick="InfoNumber()"></div>
                     </div>
                 </div>
             </div>
@@ -727,12 +726,15 @@
                 }
             );
         };
+
         /*POP*/
         function pop(containerID, ispop) {
             var popBox = $('#' + containerID + '> .popBox')[0];
             var popLayer = $('#' + containerID + '> .popLayer')[0];
             popBox.style.display = popLayer.style.display = ispop ? "block" : "none";
         }
+
+        /*測試用*/
         function dateTest() {
             $.post("/API/MemberAPI/Datetest",
                 {
@@ -747,6 +749,7 @@
                 }
             );
         }
+
         /*日期選擇元件*/
         $(function () {
             $("#datepicker").datepicker({
@@ -774,6 +777,19 @@
             };
             $.datepicker.setDefaults($.datepicker.regional["zh-TW"]);
         });
+
+        /*會員資料公開或隱藏*/
+        var infoSum = 15;
+        function InfoDate(e) {
+            var hideImage = "/Image/InfoHide.png";
+            var publicImage = "/Image/InfoPublic.png";
+            var infoNumber = e.id.slice(-1);
+            e.src = e.src.includes(publicImage) ? hideImage : publicImage;
+            infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum -Number(infoNumber);
+        };
+        function InfoNumber() {
+            alert(infoSum);
+        }
     </script>
 </body>
 </html>
