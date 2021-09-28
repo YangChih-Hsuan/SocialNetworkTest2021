@@ -4,23 +4,63 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SocialNetworkTest2021Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SocialNetworkTest2021Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="FriendList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="FriendID" />
+          </Key>
+          <Property Name="MemberID" Type="int" Nullable="false" />
+          <Property Name="FriendID" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Member">
           <Key>
             <PropertyRef Name="MemberID" />
           </Key>
           <Property Name="MemberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Account" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="NickName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Mail" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Birthday" Type="date" />
+          <Property Name="Interest" Type="nvarchar" MaxLength="300" />
+          <Property Name="Job" Type="nvarchar" MaxLength="300" />
+          <Property Name="Education" Type="nvarchar" MaxLength="20" />
+          <Property Name="InfoStatus" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostNumber" />
+          </Key>
+          <Property Name="PostNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MeberID" Type="int" Nullable="false" />
+          <Property Name="PostContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PostImage" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="GoodQuantity" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PostMsg">
+          <Key>
+            <PropertyRef Name="MsgNumber" />
+          </Key>
+          <Property Name="MsgNumber" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PostNumber" Type="int" Nullable="false" />
+          <Property Name="MemberID" Type="int" Nullable="false" />
+          <Property Name="MsgContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MsgImage" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityContainer Name="SocialNetworkTest2021ModelStoreContainer">
+          <EntitySet Name="FriendList" EntityType="Self.FriendList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostMsg" EntityType="Self.PostMsg" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SocialNetworkTest2021Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -30,14 +70,55 @@
           </Key>
           <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Account" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="NickName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NickName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Mail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Birthday" Type="DateTime" Precision="0" />
+          <Property Name="Interest" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Job" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Education" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="InfoStatus" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="SocialNetworkTest2021Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Member" EntityType="Self.Member" />
+          <EntitySet Name="FriendList" EntityType="SocialNetworkTest2021Model.FriendList" />
+          <EntitySet Name="Post" EntityType="SocialNetworkTest2021Model.Post" />
+          <EntitySet Name="PostMsg" EntityType="SocialNetworkTest2021Model.PostMsg" />
         </EntityContainer>
+        <EntityType Name="FriendList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="FriendID" />
+          </Key>
+          <Property Name="MemberID" Type="Int32" Nullable="false" />
+          <Property Name="FriendID" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostNumber" />
+          </Key>
+          <Property Name="PostNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MeberID" Type="Int32" Nullable="false" />
+          <Property Name="PostContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PostImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="GoodQuantity" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="PostMsg">
+          <Key>
+            <PropertyRef Name="MsgNumber" />
+          </Key>
+          <Property Name="MsgNumber" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PostNumber" Type="Int32" Nullable="false" />
+          <Property Name="MemberID" Type="Int32" Nullable="false" />
+          <Property Name="MsgContent" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MsgImage" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -47,12 +128,52 @@
           <EntitySetMapping Name="Member">
             <EntityTypeMapping TypeName="SocialNetworkTest2021Model.Member">
               <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="InfoStatus" ColumnName="InfoStatus" />
+                <ScalarProperty Name="Education" ColumnName="Education" />
+                <ScalarProperty Name="Job" ColumnName="Job" />
+                <ScalarProperty Name="Interest" ColumnName="Interest" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
                 <ScalarProperty Name="Account" ColumnName="Account" />
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Mail" ColumnName="Mail" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FriendList">
+            <EntityTypeMapping TypeName="SocialNetworkTest2021Model.FriendList">
+              <MappingFragment StoreEntitySet="FriendList">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="FriendID" ColumnName="FriendID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post">
+            <EntityTypeMapping TypeName="SocialNetworkTest2021Model.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="GoodQuantity" ColumnName="GoodQuantity" />
+                <ScalarProperty Name="PostImage" ColumnName="PostImage" />
+                <ScalarProperty Name="PostContent" ColumnName="PostContent" />
+                <ScalarProperty Name="MeberID" ColumnName="MeberID" />
+                <ScalarProperty Name="PostNumber" ColumnName="PostNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostMsg">
+            <EntityTypeMapping TypeName="SocialNetworkTest2021Model.PostMsg">
+              <MappingFragment StoreEntitySet="PostMsg">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="MsgImage" ColumnName="MsgImage" />
+                <ScalarProperty Name="MsgContent" ColumnName="MsgContent" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="PostNumber" ColumnName="PostNumber" />
+                <ScalarProperty Name="MsgNumber" ColumnName="MsgNumber" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

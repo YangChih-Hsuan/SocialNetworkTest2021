@@ -539,7 +539,7 @@
                         </div>
                         <div style="display:flex; align-items:center;">
                             <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;">
-                            <input class="btn_Verification" type="button" value="取得驗證碼">
+                            <input class="btn_Verification" type="button" value="取得驗證碼" onclick="MailSend()">
                         </div>
                     </div>
                     <div class="linediv"><div class="lineStyle"></div></div>
@@ -586,7 +586,6 @@
                             </div>
                         </div>
                         <div class="InfoInputdiv">
-                            @*<input class="input_sinup" type="date" autocomplete="off" maxlength="20" value="1995-06-15" id="Birth">*@
                             <input type="text" id="year" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">年</a>
                             <input type="text" id="month" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">月</a>
                             <input type="text" id="day" autocomplete="off" class="DateInput" disabled="disabled"><a class="DateText">日</a>
@@ -604,7 +603,7 @@
                             </div>
                         </div>
                         <div class="InfoInputdiv">
-                            <input class="input_sinup" type="text" autocomplete="off" maxlength="20">
+                            <input id="infoInternest" class="input_sinup" type="text" autocomplete="off" maxlength="20">
                             <div><img onclick="InfoDate(this)" id="InfoBtn2" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
@@ -615,7 +614,7 @@
                             </div>
                         </div>
                         <div class="InfoInputdiv">
-                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
+                            <input id="infoJob" class="input_sinup" type="text" autocomplete="off" maxlength="100">
                             <div><img onclick="InfoDate(this)" id="InfoBtn4" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
@@ -626,7 +625,7 @@
                             </div>
                         </div>
                         <div class="InfoInputdiv">
-                            <input class="input_sinup" type="text" autocomplete="off" maxlength="100">
+                            <input id="infoEducation" class="input_sinup" type="text" autocomplete="off" maxlength="100">
                             <div><img onclick="InfoDate(this)" id="InfoBtn8" class="svg InfoIcon" src="/Image/InfoPublic.png"></div>
                         </div>
                     </div>
@@ -788,7 +787,27 @@
             infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum -Number(infoNumber);
         };
         function InfoNumber() {
-            alert(infoSum);
+            var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();
+            var internest = $('#infoInternest').val();
+            var job = $('#infoJob').val();
+            var education = $('#infoEducation').val();
+            alert(infoSum + '\n' + birthday + '\n' + internest + '\n' + job + '\n' + education);
+        }
+
+        /*寄驗證碼到Mail*/
+        function MailSend() {
+            debugger
+            $.post("/API/MailAPI/Account",
+                {
+                    Mail: $('#mail').val()
+                },
+                (res) => {
+                    if (res.ResultCode == 1)
+                        alert(res.Message);
+                    else
+                        alert(res.Message);
+                }
+            );
         }
     </script>
 </body>

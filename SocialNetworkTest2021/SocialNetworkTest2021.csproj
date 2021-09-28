@@ -152,12 +152,22 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\API\MemberAPIController.cs" />
     <Compile Include="Controllers\API\TestController.cs" />
+    <Compile Include="Controllers\API\MailAPI.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\ConfigHelper.cs" />
+    <Compile Include="Model\FriendList.cs">
+      <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Member.cs">
+      <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Post.cs">
+      <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PostMsg.cs">
       <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\SocialNetworkDBModel.Context.cs">
@@ -175,6 +185,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SocialNetworkDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\MailViewModel.cs" />
     <Compile Include="ViewModel\IndexViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ResponseViewModel.cs" />

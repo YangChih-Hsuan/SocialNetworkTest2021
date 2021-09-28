@@ -26,5 +26,8 @@ namespace SocialNetworkTest2021.Model
         }
     
         public virtual DbSet<Member> Member { get; set; }
+        public virtual DbSet<FriendList> FriendList { get; set; }
+        public virtual DbSet<Post> Post { get; set; }
+        public virtual DbSet<PostMsg> PostMsg { get; set; }
     }
 }

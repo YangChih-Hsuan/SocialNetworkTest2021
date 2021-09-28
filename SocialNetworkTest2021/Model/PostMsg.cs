@@ -12,19 +12,13 @@ namespace SocialNetworkTest2021.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Member
+    public partial class PostMsg
     {
+        public int MsgNumber { get; set; }
+        public int PostNumber { get; set; }
         public int MemberID { get; set; }
-        public string Account { get; set; }
-        public string NickName { get; set; }
-        public string Password { get; set; }
-        public string Mail { get; set; }
+        public string MsgContent { get; set; }
+        public string MsgImage { get; set; }
         public System.DateTime CreateDate { get; set; }
-        public Nullable<System.DateTime> Birthday { get; set; }
-        public string Interest { get; set; }
-        public string Job { get; set; }
-        public string Education { get; set; }
-        public int InfoStatus { get; set; }
-        public int Status { get; set; }
     }
 }
