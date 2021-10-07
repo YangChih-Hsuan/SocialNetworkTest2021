@@ -10,29 +10,43 @@ namespace SocialNetworkTest2021.Controllers.API
     [RoutePrefix("API/MailAPI")]
     public class MailAPIController : ApiController
     {
-        //驗證電子郵件是否已註冊過
-        [HttpPost, Route(nameof(MailAPIController.Account))]
-        public ResponseViewModel<string> Account(MailModels mailAccount)
+        //驗證Mail是否註冊過 & 驗證碼寫入DB
+        [HttpPost, Route(nameof(MailAPIController.CheckMail))]
+        public ResponseViewModel<string> CheckMail(MailModels mailAccount)
         {
             var memberdb = new SocialNetworkTest2021Entities();
+
             //從DB撈出相同的Mail
-            var account = memberdb.Member.Where(w => w.Mail == mailAccount.Mail).FirstOrDefault();
+            var accountMail = memberdb.Member.Where(w => w.Mail == mailAccount.Mail).FirstOrDefault();
+
             ResponseViewModel<string> result = new ResponseViewModel<string>();
+
             //用來接MailSend回傳值 使用MailSend回傳相同型別
             var mailSendResult = new ResponseViewModel<string>();
 
-            if (account == null)
+            if (accountMail == null)
             {
                 //MailSend呼叫&回傳給mailSendResult變數
                 mailSendResult = this.MailSend(mailAccount);
                 result.ResultCode = 1;
                 result.Message = mailSendResult.Message;
+
+                //驗證碼寫入DB
+                var newVCode = new VerificationCode()
+                {
+                    VCode = int.Parse(mailSendResult.Data), //轉int
+                    Status = 0, //預設狀態(未驗證註冊)
+                    CreateDate = DateTime.Now
+                };
+                memberdb.VerificationCode.Add(newVCode);
+                memberdb.SaveChanges();
             }
             else
             {
                 result.ResultCode = 0;
                 result.Message = "此電子郵件已註冊過！";
             }
+
             return result;
         }
 
@@ -45,7 +59,7 @@ namespace SocialNetworkTest2021.Controllers.API
             MailMessage mail = new MailMessage();
 
             //前面是發信email後面是顯示的名稱
-            mail.From = new MailAddress("shanna615615615.sy@gmail.com", "ShannaTest");
+            mail.From = new MailAddress("shanna615615615.sy@gmail.com", "IKKON");
 
             //收信者email
             mail.To.Add(mailString);
@@ -54,13 +68,13 @@ namespace SocialNetworkTest2021.Controllers.API
             mail.Priority = MailPriority.Normal;
 
             //標題
-            mail.Subject = "Shanna程式發送郵件測試";
+            mail.Subject = "IKKON 註冊驗證";
 
             //Mail內容
             //Random為虛擬亂數產生器
             //Random.Next傳回非負值的隨機整數
-            string Vcode = new Random().Next(10000).ToString();
-            mail.Body = "<h1>驗證碼:" + Vcode + "</h1>";
+            string vCode = new Random().Next(10000).ToString();
+            mail.Body = "<h1>驗證碼:" + vCode + "</h1>";
 
             //內容使用html
             mail.IsBodyHtml = true;
@@ -85,6 +99,7 @@ namespace SocialNetworkTest2021.Controllers.API
 
             result.ResultCode = 1;
             result.Message = "已發送";
+            result.Data = vCode;
 
             return result;
 

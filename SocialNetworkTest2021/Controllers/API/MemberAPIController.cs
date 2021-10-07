@@ -39,36 +39,46 @@ namespace SocialNetworkTest2021.Controllers.API
 
             try
             {
+                //連接資料庫
                 var memberdb = new SocialNetworkTest2021Entities();
-                var account = singupViewModel.Account;
-                var password = singupViewModel.Password;
-                var mail = singupViewModel.Mail;
-                var name = singupViewModel.Name;
+
+                //會員註冊資料參數定義
+                var nickName = singupViewModel.nickName; //會員名稱
+                var account = singupViewModel.Account; //會員帳號
+                var password = singupViewModel.Password; //會員密碼
+                var mail = singupViewModel.Mail; //會員Mail
 
                 //檢查是否輸入空值
-                if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName))
                 {
                     result.ResultCode = 0;
-                    result.Message = "尚有資料未輸入完成(API)";
+                    result.Message = "尚有資料未輸入完成!";
                     return result;
                 }
+
                 //檢查是否符合輸入規則
 
                 //檢查帳號和信箱是否已註冊過(兩者都不能重複)
 
-                //是否已註冊成功
-
+                //註冊資料寫入DB
                 var newMember = new Member()
                 {
                     Account = account,
+                    NickName = nickName,
                     Password = password,
                     Mail = mail,
-                    NickName = name,
+                    Birthday = null,
+                    Interest = null,
+                    Job = null,
+                    Education = null,
+                    InfoStatus = 15,//預設值
+                    Status = 1,//預設值
                     CreateDate = DateTime.Now
                 };
                 memberdb.Member.Add(newMember);
                 memberdb.SaveChanges();
 
+                //檢查是否已註冊成功
                 if (newMember != null)
                 {
                     result.ResultCode = 1;

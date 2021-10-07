@@ -797,7 +797,7 @@
         /*寄驗證碼到Mail*/
         function MailSend() {
             debugger
-            $.post("/API/MailAPI/Account",
+            $.post("/API/MailAPI/CheckMail",
                 {
                     Mail: $('#mail').val()
                 },

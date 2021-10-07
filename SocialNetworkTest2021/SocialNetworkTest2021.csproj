@@ -185,6 +185,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SocialNetworkDBModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\VerificationCode.cs">
+      <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\MailViewModel.cs" />
     <Compile Include="ViewModel\IndexViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />

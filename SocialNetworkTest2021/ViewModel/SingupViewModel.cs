@@ -3,9 +3,9 @@
     //註冊
     public class SingupViewModel
     {
-        public string Name { get; set; }
-        public string Account { get; set; }
-        public string Password { get; set; }
-        public string Mail {get; set;}
+        public string nickName { get; set; } //會員名稱
+        public string Account { get; set; } //會員帳號
+        public string Password { get; set; } //會員密碼
+        public string Mail {get; set;} //會員Mail
     }
 }
