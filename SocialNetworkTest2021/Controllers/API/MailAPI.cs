@@ -24,6 +24,14 @@ namespace SocialNetworkTest2021.Controllers.API
             //用來接MailSend回傳值 使用MailSend回傳相同型別
             var mailSendResult = new ResponseViewModel<string>();
 
+            //檢查是否輸入空值
+            if (string.IsNullOrEmpty(mailAccount.Mail))
+            {
+                result.ResultCode = 0;
+                result.Message = "請輸入電子郵件!";
+                return result;
+            }
+
             if (accountMail == null)
             {
                 //MailSend呼叫&回傳給mailSendResult變數
@@ -57,6 +65,14 @@ namespace SocialNetworkTest2021.Controllers.API
             ResponseViewModel<string> result = new ResponseViewModel<string>();
             var mailString = mailviewmodels.Mail;
             MailMessage mail = new MailMessage();
+
+            //檢查是否輸入空值
+            if (string.IsNullOrEmpty(mailString))
+            {
+                result.ResultCode = 0;
+                result.Message = "請輸入電子郵件!";
+                return result;
+            }
 
             //前面是發信email後面是顯示的名稱
             mail.From = new MailAddress("shanna615615615.sy@gmail.com", "IKKON");
@@ -105,6 +121,7 @@ namespace SocialNetworkTest2021.Controllers.API
 
             /*
               (2021/09/28) 待補發送失敗判斷
+              (2021/10/09) 待補驗證碼到期時間(點註冊打API檢查驗證碼到期時間)
             */
         }
     }

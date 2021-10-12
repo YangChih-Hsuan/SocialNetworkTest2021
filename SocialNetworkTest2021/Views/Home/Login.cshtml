@@ -496,7 +496,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="name" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="singup_name" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -528,7 +528,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
+                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" id="singup_passwordCheck" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
                         </div>
                     </div>
                     <div class="singupContent">
@@ -550,7 +550,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_Vcode" autocomplete="off" maxlength="20" style="margin-bottom:5px">
                             <br>
                             <a class="PromptText">請至電子郵件收取信件，取得驗證碼以完成註冊。</a>
                         </div>
@@ -563,9 +563,18 @@
             <div id="supingError">
                 <div class="popLayer"></div>
                 <div class="popBox Error">
-                    <a class="ErrorText">資料未填寫完整</a>
+                    <a class="ErrorText" id="singErrorText"></a>
                     <div class="btn_div">
                         <input class="btn_Error" type="button" value="確認" onclick="pop('supingError', false)">
+                    </div>
+                </div>
+            </div>
+            <div id="MailError">
+                <div class="popLayer"></div>
+                <div class="popBox Error">
+                    <a class="ErrorText">請輸入電子郵件!</a>
+                    <div class="btn_div">
+                        <input class="btn_Error" type="button" value="確認" onclick="pop('MailError', false)">
                     </div>
                 </div>
             </div>
@@ -693,35 +702,45 @@
         };
 
         function Singup() {
-            if ($("#singup_account").val() == null || $("#singup_account").val() == "") {
-                //alert("您尚未填寫帳號!");
+            //擋輸入空值
+            if ($("#singup_name").val() == null || $("#singup_name").val() == "") {
                 pop('supingError', true);
+                $('#singErrorText').html('您尚未填寫姓名!')
+            } else if ($("#singup_account").val() == null || $("#singup_account").val() == "") {
+                pop('supingError', true);
+                $('#singErrorText').html('您尚未填寫帳號!')
             } else if ($("#singup_password").val() == null || $("#singup_password").val() == "") {
-                //alert("您尚未填寫密碼!");
                 pop('supingError', true);
-            } else if ($("#name").val() == null || $("#name").val() == "") {
-                //alert("您尚未填寫姓名!");
+                $('#singErrorText').html('您尚未填寫密碼!')
+            } else if ($("#singup_passwordCheck").val() == null || $("#singup_passwordCheck").val() == "") {
                 pop('supingError', true);
+                $('#singErrorText').html('您尚未填寫確認密碼!')
             } else if ($("#mail").val() == null || $("#mail").val() == "") {
-                //alert("您尚未填寫mail!");
                 pop('supingError', true);
+                $('#singErrorText').html('您尚未填寫mail!')
+            } else if ($("#singup_Vcode").val() == null || $("#singup_Vcode").val() == "") {
+                pop('supingError', true);
+                $('#singErrorText').html('您尚未填寫註冊驗證碼!')
             }
+
+            //串註冊API
             $.post("/API/MemberAPI/Singup",
                 {
+                    nickName: $("#singup_name").val(),
                     Account: $("#singup_account").val(),
                     Password: $("#singup_password").val(),
-                    Name: $("#name").val(),
-                    //PasswordConfirm: $("#passwordConfirm").val(),
-                    Mail: $("#mail").val()
-                    //VerificationCode: $("#verificationCode").val()
+                    PasswordCheck: $("#singup_passwordCheck").val(),
+                    Mail: $("#mail").val(),
+                    VCode: $("#singup_Vcode").val()
                 },
                 (res) => {
-                    if (res.ResultCode == 1)
-                        // 導主頁
+                    if (res.ResultCode == 1) {
                         alert(res.Message);
-                    //window.location.href = '/Home/Index';
-                    else
+                        pop('MemberInfo', true);
+                    }
+                    else {
                         alert(res.Message);
+                    }
                 }
             );
         };
@@ -784,7 +803,7 @@
             var publicImage = "/Image/InfoPublic.png";
             var infoNumber = e.id.slice(-1);
             e.src = e.src.includes(publicImage) ? hideImage : publicImage;
-            infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum -Number(infoNumber);
+            infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum - Number(infoNumber);
         };
         function InfoNumber() {
             var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();
@@ -796,7 +815,10 @@
 
         /*寄驗證碼到Mail*/
         function MailSend() {
-            debugger
+            if ($("#mail").val() == null || $("#mail").val() == "")
+            {
+                pop('MailError', true);
+            }
             $.post("/API/MailAPI/CheckMail",
                 {
                     Mail: $('#mail').val()
@@ -805,7 +827,8 @@
                     if (res.ResultCode == 1)
                         alert(res.Message);
                     else
-                        alert(res.Message);
+                        pop('MailError', true);
+                        //alert(res.Message);
                 }
             );
         }
