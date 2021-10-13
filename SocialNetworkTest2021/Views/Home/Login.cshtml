@@ -496,7 +496,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="singup_name" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="singup_name" autocomplete="off" maxlength="30">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -518,7 +518,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請設定登入密碼" id="singup_password" autocomplete="off" maxlength="100">
+                            <input class="input_sinup" type="text" placeholder="請設定登入密碼" id="singup_password" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -528,7 +528,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" id="singup_passwordCheck" autocomplete="off" maxlength="100"> @*密碼確認方式待研究*@
+                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" id="singup_passwordCheck" autocomplete="off" maxlength="20">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -550,7 +550,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_Vcode" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_Vcode" autocomplete="off" maxlength="4" style="margin-bottom:5px" oninput="value=value.replace(/[^\d]/g,'')">
                             <br>
                             <a class="PromptText">請至電子郵件收取信件，取得驗證碼以完成註冊。</a>
                         </div>
@@ -723,6 +723,12 @@
                 $('#singErrorText').html('您尚未填寫註冊驗證碼!')
             }
 
+            //檢查會員密碼與密碼確認是否相符
+            if ($("#singup_password").val() != $("#singup_passwordCheck").val()) {
+                pop('supingError', true);
+                $('#singErrorText').html('確認密碼與密碼不相符!')
+            }
+
             //串註冊API
             $.post("/API/MemberAPI/Singup",
                 {
@@ -815,8 +821,7 @@
 
         /*寄驗證碼到Mail*/
         function MailSend() {
-            if ($("#mail").val() == null || $("#mail").val() == "")
-            {
+            if ($("#mail").val() == null || $("#mail").val() == "") {
                 pop('MailError', true);
             }
             $.post("/API/MailAPI/CheckMail",
@@ -828,7 +833,7 @@
                         alert(res.Message);
                     else
                         pop('MailError', true);
-                        //alert(res.Message);
+                    //alert(res.Message);
                 }
             );
         }

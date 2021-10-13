@@ -46,17 +46,27 @@ namespace SocialNetworkTest2021.Controllers.API
                 var nickName = singupViewModel.nickName; //會員名稱
                 var account = singupViewModel.Account; //會員帳號
                 var password = singupViewModel.Password; //會員密碼
+                var passwordCheck = singupViewModel.PasswordCheck; //密碼確認
                 var mail = singupViewModel.Mail; //會員Mail
+                var vCode = singupViewModel.VCode; //驗證碼
 
                 //檢查是否輸入空值
-                if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName))
+                if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName) || string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(vCode))
                 {
                     result.ResultCode = 0;
                     result.Message = "尚有資料未輸入完成!";
                     return result;
                 }
 
-                //檢查是否符合輸入規則
+                //檢查會員密碼與密碼確認是否相符
+                if ( password != passwordCheck) {
+                    result.ResultCode = 0;
+                    result.Message = "確認密碼與密碼不相符!";
+                    return result;
+                }
+
+                //檢查輸入資料是否符合規則
+
 
                 //檢查帳號和信箱是否已註冊過(兩者都不能重複)
 
