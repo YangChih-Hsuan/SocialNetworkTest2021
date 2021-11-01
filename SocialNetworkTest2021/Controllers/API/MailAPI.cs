@@ -31,6 +31,12 @@ namespace SocialNetworkTest2021.Controllers.API
                 result.Message = "請輸入電子郵件!";
                 return result;
             }
+            //檢查是否已註冊過
+            if (accountMail != null) {
+                result.ResultCode = 0;
+                result.Message = "此電子郵件已註冊過!";
+                return result;
+            }
 
             if (accountMail == null)
             {
@@ -52,7 +58,7 @@ namespace SocialNetworkTest2021.Controllers.API
             else
             {
                 result.ResultCode = 0;
-                result.Message = "此電子郵件已註冊過！";
+                result.Message = "註冊失敗!";
             }
 
             return result;

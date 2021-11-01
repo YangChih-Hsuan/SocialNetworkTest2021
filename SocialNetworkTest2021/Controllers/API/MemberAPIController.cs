@@ -50,6 +50,10 @@ namespace SocialNetworkTest2021.Controllers.API
                 var mail = singupViewModel.Mail; //會員Mail
                 var vCode = singupViewModel.VCode; //驗證碼
 
+                var singupAccountCheck = memberdb.Member.Where(w => w.Account == singupViewModel.Account).FirstOrDefault();//註冊檢查帳號
+                var singupMailCheck = memberdb.Member.Where(w => w.Mail == singupViewModel.Mail).FirstOrDefault();//註冊檢查mail
+                var singupVCodeCheck = memberdb.VerificationCode.Where(w => w.VCode == StringConvert(singupViewModel.VCode)).FirstOrDefault();//註冊檢查驗證碼 && DateTime.Now.AddMinutes(-10)
+
                 //檢查是否輸入空值
                 if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName) || string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(vCode))
                 {
@@ -59,7 +63,8 @@ namespace SocialNetworkTest2021.Controllers.API
                 }
 
                 //檢查會員密碼與密碼確認是否相符
-                if ( password != passwordCheck) {
+                if (password != passwordCheck)
+                {
                     result.ResultCode = 0;
                     result.Message = "確認密碼與密碼不相符!";
                     return result;
@@ -67,8 +72,22 @@ namespace SocialNetworkTest2021.Controllers.API
 
                 //檢查輸入資料是否符合規則
 
-
                 //檢查帳號和信箱是否已註冊過(兩者都不能重複)
+                if (singupAccountCheck != null)
+                {
+                    result.ResultCode = 0;
+                    result.Message = "此帳號已註冊過!";
+                    return result;
+                }
+                if (singupMailCheck != null)
+                {
+                    result.ResultCode = 0;
+                    result.Message = "此電子信箱已註冊過!";
+                    return result;
+                }
+
+                //檢查驗證碼
+
 
                 //註冊資料寫入DB
                 var newMember = new Member()
@@ -93,7 +112,6 @@ namespace SocialNetworkTest2021.Controllers.API
                 {
                     result.ResultCode = 1;
                     result.Message = "註冊成功";
-
                     return result;
                 }
             }
@@ -103,6 +121,11 @@ namespace SocialNetworkTest2021.Controllers.API
                 result.Message = "註冊失敗";
             }
             return result;
+        }
+
+        private int StringConvert(string vCode)
+        {
+            throw new NotImplementedException();
         }
 
         //測試日期傳值
