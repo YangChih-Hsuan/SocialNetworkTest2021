@@ -59,7 +59,7 @@
             <PropertyRef Name="Number" />
           </Key>
           <Property Name="Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="VCode" Type="int" Nullable="false" />
+          <Property Name="VCode" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
         </EntityType>
@@ -135,7 +135,7 @@
             <PropertyRef Name="Number" />
           </Key>
           <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="VCode" Type="Int32" Nullable="false" />
+          <Property Name="VCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
         </EntityType>

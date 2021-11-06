@@ -48,7 +48,7 @@ namespace SocialNetworkTest2021.Controllers.API
                 //驗證碼寫入DB
                 var newVCode = new VerificationCode()
                 {
-                    VCode = int.Parse(mailSendResult.Data), //轉int
+                    VCode = mailSendResult.Data,
                     Status = 0, //預設狀態(未驗證註冊)
                     CreateDate = DateTime.Now
                 };

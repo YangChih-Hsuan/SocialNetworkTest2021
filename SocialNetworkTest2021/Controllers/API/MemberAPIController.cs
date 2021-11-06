@@ -52,7 +52,8 @@ namespace SocialNetworkTest2021.Controllers.API
 
                 var singupAccountCheck = memberdb.Member.Where(w => w.Account == singupViewModel.Account).FirstOrDefault();//註冊檢查帳號
                 var singupMailCheck = memberdb.Member.Where(w => w.Mail == singupViewModel.Mail).FirstOrDefault();//註冊檢查mail
-                var singupVCodeCheck = memberdb.VerificationCode.Where(w => w.VCode == StringConvert(singupViewModel.VCode)).FirstOrDefault();//註冊檢查驗證碼 && DateTime.Now.AddMinutes(-10)
+                var singupVCodeCheck = memberdb.VerificationCode.Where(w => w.VCode == singupViewModel.VCode).FirstOrDefault();//註冊檢查驗證碼
+                //var singupVCodeTimeCheck = memberdb.VerificationCode.Where(w => w.CreateDate > DateTime.Now.AddMinutes(-10)).FirstOrDefault();//檢查驗證碼時效(目前加這段會一直註冊失敗)
 
                 //檢查是否輸入空值
                 if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName) || string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(vCode))
@@ -86,24 +87,29 @@ namespace SocialNetworkTest2021.Controllers.API
                     return result;
                 }
 
-                //檢查驗證碼
-
+                //檢查驗證碼輸入是否正確
+                if (singupVCodeCheck == null)
+                {
+                    result.ResultCode = 0;
+                    result.Message = "驗證碼輸入錯誤!";
+                    return result;
+                }
 
                 //註冊資料寫入DB
                 var newMember = new Member()
-                {
-                    Account = account,
-                    NickName = nickName,
-                    Password = password,
-                    Mail = mail,
-                    Birthday = null,
-                    Interest = null,
-                    Job = null,
-                    Education = null,
-                    InfoStatus = 15,//預設值
+               {
+                   Account = account,
+                   NickName = nickName,
+                   Password = password,
+                   Mail = mail,
+                   Birthday = null,
+                   Interest = null,
+                   Job = null,
+                   Education = null,
+                   InfoStatus = 15,//預設值
                     Status = 1,//預設值
                     CreateDate = DateTime.Now
-                };
+               };
                 memberdb.Member.Add(newMember);
                 memberdb.SaveChanges();
 

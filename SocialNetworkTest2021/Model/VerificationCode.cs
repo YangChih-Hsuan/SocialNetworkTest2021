@@ -15,7 +15,7 @@ namespace SocialNetworkTest2021.Model
     public partial class VerificationCode
     {
         public int Number { get; set; }
-        public int VCode { get; set; }
+        public string VCode { get; set; }
         public int Status { get; set; }
         public System.DateTime CreateDate { get; set; }
     }
