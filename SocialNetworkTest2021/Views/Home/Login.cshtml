@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.9.1.js"></script>
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+    @Scripts.Render("~/bundles/Common")
+    @Styles.Render("~/Common/css")
     <meta charset="utf-8" />
     <title>IKKON</title>
     <style>
@@ -496,7 +499,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="singup_name" autocomplete="off" maxlength="30">
+                            <input class="input_sinup" type="text" placeholder="限制字數30字" id="singup_name" autocomplete="off" maxlength="30" onkeyup="RemoveErrorInput(this.id)">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -506,9 +509,9 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請設定登入帳號" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px">
+                            <input class="input_sinup" type="text" placeholder="請輸入會員帳號" id="singup_account" autocomplete="off" maxlength="20" style="margin-bottom:5px" onkeyup="RemoveErrorInput(this.id)">
                             <br>
-                            <a class="PromptText">限制設定6個以上英文或數字，勿使用特殊符號。</a>
+                            <a class="PromptText">限制設定至少6碼的英數字</a>
                         </div>
                     </div>
                     <div class="singupContent">
@@ -518,7 +521,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請設定登入密碼" id="singup_password" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="請輸入會員密碼" id="singup_password" autocomplete="off" maxlength="20" onkeyup="RemoveErrorInput(this.id)">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -528,7 +531,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請再輸入一次密碼" id="singup_passwordCheck" autocomplete="off" maxlength="20">
+                            <input class="input_sinup" type="text" placeholder="請再次輸入密碼" id="singup_passwordCheck" autocomplete="off" maxlength="20" onkeyup="RemoveErrorInput(this.id)">
                         </div>
                     </div>
                     <div class="singupContent">
@@ -538,7 +541,7 @@
                             </div>
                         </div>
                         <div style="display:flex; align-items:center;">
-                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;">
+                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;" onkeyup="RemoveErrorInput(this.id)">
                             <input class="btn_Verification" type="button" value="取得驗證碼" onclick="MailSend()">
                         </div>
                     </div>
@@ -550,7 +553,7 @@
                             </div>
                         </div>
                         <div>
-                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_Vcode" autocomplete="off" maxlength="4" style="margin-bottom:5px" oninput="value=value.replace(/[^\d]/g,'')">
+                            <input class="input_sinup" type="text" placeholder="請輸入驗證碼" id="singup_Vcode" autocomplete="off" maxlength="4" style="margin-bottom:5px" oninput="value=value.replace(/[^\d]/g,'')" onkeyup="RemoveErrorInput(this.id)">
                             <br>
                             <a class="PromptText">請至電子郵件收取信件，取得驗證碼以完成註冊。</a>
                         </div>
@@ -701,32 +704,54 @@
             );
         };
 
+        /**
+         * 移除 class input-error
+         * @@param id HtmlID
+         */
+        function RemoveErrorInput(id) {
+            $('#' + id).removeClass('input-error');
+        }
+
+        /** 註冊 */
         function Singup() {
-            //擋輸入空值
-            if ($("#singup_name").val() == null || $("#singup_name").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫姓名!')
-            } else if ($("#singup_account").val() == null || $("#singup_account").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫帳號!')
-            } else if ($("#singup_password").val() == null || $("#singup_password").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫密碼!')
-            } else if ($("#singup_passwordCheck").val() == null || $("#singup_passwordCheck").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫確認密碼!')
-            } else if ($("#mail").val() == null || $("#mail").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫mail!')
-            } else if ($("#singup_Vcode").val() == null || $("#singup_Vcode").val() == "") {
-                pop('supingError', true);
-                $('#singErrorText').html('您尚未填寫註冊驗證碼!')
+            let errorMsg = {
+                singup_name: '您尚未填寫 會員名稱',
+                singup_account: '您尚未填寫 會員帳號',
+                singup_password: '您尚未填寫 會員密碼',
+                singup_passwordCheck: '您尚未填寫 確認密碼',
+                mail: '您尚未填寫 電子郵件',
+                singup_Vcode: '您尚未填寫 驗證碼'
+            };
+
+            let error = '';
+
+            // 前端檢查欄位
+            Object.keys(errorMsg).forEach(key => {
+                if (!error && !$('#' + key).val()) {
+                    $('#' + key).removeClass('input-error');
+
+                    error = errorMsg[key];
+                    $('#' + key).addClass('input-error');
+                }
+            });
+
+            if (!error) {
+                let regexAccountValidation = new RegExp('^.[A-Za-z0-9]+$');
+                if ($("#singup_account").val().length < 6 || !regexAccountValidation.test($("#singup_account").val())) {
+                    error = '會員帳號需至少為6碼的英數字';
+                    $('#singup_account').addClass('input-error');
+                }
+                else if ($("#singup_password").val() != $("#singup_passwordCheck").val()) {
+                    error = '會員密碼與確認密碼不相符';
+                    $('#singup_password').addClass('input-error');
+                    $('#singup_passwordCheck').addClass('input-error');
+                }
             }
 
-            //檢查會員密碼與密碼確認是否相符
-            if ($("#singup_password").val() != $("#singup_passwordCheck").val()) {
+            if (error) {
                 pop('supingError', true);
-                $('#singErrorText').html('確認密碼與密碼不相符!')
+                $('#singErrorText').html(error);
+                return;
             }
 
             //串註冊API
@@ -811,6 +836,7 @@
             e.src = e.src.includes(publicImage) ? hideImage : publicImage;
             infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum - Number(infoNumber);
         };
+
         function InfoNumber() {
             var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();
             var internest = $('#infoInternest').val();
