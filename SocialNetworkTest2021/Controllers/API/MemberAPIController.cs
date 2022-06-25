@@ -1,34 +1,45 @@
-﻿using SocialNetworkTest2021.Model;
+﻿using SocialNetworkTest2021.Enum;
+using SocialNetworkTest2021.Helper;
+using SocialNetworkTest2021.Model;
 using SocialNetworkTest2021.ViewModel;
 using System;
 using System.Linq;
+using System.Web;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace SocialNetworkTest2021.Controllers.API
 {
     [RoutePrefix("API/MemberAPI")]
     public class MemberAPIController : ApiController
     {
+        private NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         //會員登入
-        [HttpPost, Route(nameof(MemberAPIController.LoginV2))]
-        public ResponseViewModel<string> LoginV2(LoginViewModel loginViewModel)
+        [HttpPost, Route(nameof(MemberAPIController.Login))]
+        public ResponseViewModel<string> Login(LoginViewModel loginViewModel)
         {
-            var memberdb = new SocialNetworkTest2021Entities();
-            var account = memberdb.Member.Where(w => w.Account == loginViewModel.Account && w.Password == loginViewModel.Password).FirstOrDefault();
-            ResponseViewModel<string> result = new ResponseViewModel<string>();
-
-            if (account != null)
+            try
             {
-                result.ResultCode = 1;
-                result.Message = "登入成功";
-                result.Data = "帳號:" + account.Account + "\n密碼:" + account.Password;
+                if (!ModelState.IsValid)
+                    return ModelState.AsFailResponse();
 
-                return result;
+                using (var memberdb = new SocialNetworkTest2021Entities())
+                {
+                    if (memberdb.Member.Where(w => w.Account == loginViewModel.Account && w.Password == loginViewModel.Password).Any())
+                    {
+                        SetLoginCookie(loginViewModel.Account);
+                        return "登入成功!".AsSuccessResponse();
+                    }
+
+                    return "帳密錯誤!".AsSuccessResponse();
+                }
             }
-            result.ResultCode = 0;
-            result.Message = "帳號或密碼錯誤";
-
-            return result;
+            catch (Exception ex)
+            {
+                logger.Error($"會員登入發生錯誤!, ex:{ex}");
+                return "會員登入發生錯誤!".AsFailResponse();
+            }
         }
 
         //會員註冊
@@ -39,99 +50,62 @@ namespace SocialNetworkTest2021.Controllers.API
 
             try
             {
-                //連接資料庫
-                var memberdb = new SocialNetworkTest2021Entities();
-
-                //會員註冊資料參數定義
-                var nickName = singupViewModel.nickName; //會員名稱
-                var account = singupViewModel.Account; //會員帳號
-                var password = singupViewModel.Password; //會員密碼
-                var passwordCheck = singupViewModel.PasswordCheck; //密碼確認
-                var mail = singupViewModel.Mail; //會員Mail
-                var vCode = singupViewModel.VCode; //驗證碼
-
-                var singupAccountCheck = memberdb.Member.Where(w => w.Account == singupViewModel.Account).FirstOrDefault();//註冊檢查帳號
-                var singupMailCheck = memberdb.Member.Where(w => w.Mail == singupViewModel.Mail).FirstOrDefault();//註冊檢查mail
-                var singupVCodeCheck = memberdb.VerificationCode.Where(w => w.VCode == singupViewModel.VCode).FirstOrDefault();//註冊檢查驗證碼
-                //var singupVCodeTimeCheck = memberdb.VerificationCode.Where(w => w.CreateDate > DateTime.Now.AddMinutes(-10)).FirstOrDefault();//檢查驗證碼時效(目前加這段會一直註冊失敗)
-
-                //檢查是否輸入空值
-                if (string.IsNullOrEmpty(account) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(mail) || string.IsNullOrEmpty(nickName) || string.IsNullOrEmpty(passwordCheck) || string.IsNullOrEmpty(vCode))
-                {
-                    result.ResultCode = 0;
-                    result.Message = "尚有資料未輸入完成!";
-                    return result;
-                }
+                if (!ModelState.IsValid)
+                    return ModelState.AsFailResponse();
 
                 //檢查會員密碼與密碼確認是否相符
-                if (password != passwordCheck)
-                {
-                    result.ResultCode = 0;
-                    result.Message = "確認密碼與密碼不相符!";
-                    return result;
-                }
+                if (singupViewModel.Password != singupViewModel.PasswordCheck)
+                    return "確認密碼與密碼不相符!".AsFailResponse();
 
-                //檢查輸入資料是否符合規則
-
-                //檢查帳號和信箱是否已註冊過(兩者都不能重複)
-                if (singupAccountCheck != null)
+                using (var memberdb = new SocialNetworkTest2021Entities())
                 {
-                    result.ResultCode = 0;
-                    result.Message = "此帳號已註冊過!";
-                    return result;
-                }
-                if (singupMailCheck != null)
-                {
-                    result.ResultCode = 0;
-                    result.Message = "此電子信箱已註冊過!";
-                    return result;
-                }
 
-                //檢查驗證碼輸入是否正確
-                if (singupVCodeCheck == null)
-                {
-                    result.ResultCode = 0;
-                    result.Message = "驗證碼輸入錯誤!";
-                    return result;
-                }
+                    if(memberdb.Member.Where(w => w.Account == singupViewModel.Account || w.Mail == singupViewModel.Mail).Any())
+                        return "會員帳號或信箱已被註冊!".AsFailResponse();
 
-                //註冊資料寫入DB
-                var newMember = new Member()
-               {
-                   Account = account,
-                   NickName = nickName,
-                   Password = password,
-                   Mail = mail,
-                   Birthday = null,
-                   Interest = null,
-                   Job = null,
-                   Education = null,
-                   InfoStatus = 15,//預設值
-                    Status = 1,//預設值
-                    CreateDate = DateTime.Now
-               };
-                memberdb.Member.Add(newMember);
-                memberdb.SaveChanges();
+                    DateTime expiryDate = DateTime.Now.AddMinutes(-10);
+                    var singupVCodeCheck = memberdb.VerificationCode.Where(w => w.Mail == singupViewModel.Mail && 
+                                                                                w.Status == (int)VerificationEnum.NotAuth &&
+                                                                                w.CreateDate > expiryDate &&
+                                                                                w.VCode == singupViewModel.VCode).FirstOrDefault();
 
-                //檢查是否已註冊成功
-                if (newMember != null)
-                {
-                    result.ResultCode = 1;
-                    result.Message = "註冊成功";
-                    return result;
+                    if (singupVCodeCheck == null)
+                    {
+                        return "驗證碼錯誤!".AsFailResponse();
+                    }
+
+                    // 更新驗證碼狀態
+                    singupVCodeCheck.Status = (int)VerificationEnum.AuthSuccess;
+                    singupVCodeCheck.VerificationDate = DateTime.Now;
+
+                    //註冊資料寫入DB
+                    var newMember = new Member()
+                    {
+                        Account = singupViewModel.Account,
+                        NickName = singupViewModel.NickName,
+                        Password = singupViewModel.Password,
+                        Mail = singupViewModel.Mail,
+                        Birthday = null,
+                        Interest = null,
+                        Job = null,
+                        Education = null,
+                        InfoStatus = (int)MemberInfoEnum.All,
+                        Status = (int)MemberStatusEnum.在線,
+                        CreateDate = DateTime.Now
+                    };
+                    memberdb.Member.Add(newMember);
+                    memberdb.SaveChanges();
+
+                    SetLoginCookie(singupViewModel.Account);
+
+                    return "註冊成功!".AsSuccessResponse();
                 }
             }
             catch (Exception ex)
             {
-                result.ResultCode = 0;
-                result.Message = "註冊失敗";
+                logger.Error($"會員註冊發生錯誤!, ex:{ex}");
+                return "會員註冊發生錯誤!".AsFailResponse();
             }
-            return result;
-        }
-
-        private int StringConvert(string vCode)
-        {
-            throw new NotImplementedException();
         }
 
         //測試日期傳值
@@ -139,6 +113,25 @@ namespace SocialNetworkTest2021.Controllers.API
         public ResponseViewModel<string> Datetest(DateViewModel DateViewModel)
         {
             return new ResponseViewModel<string>();
+        }
+
+        /// <summary>
+        /// 設定 Cookie
+        /// </summary>
+        private void SetLoginCookie(string account)
+        {
+            FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(1, "AuthCookie", DateTime.UtcNow, DateTime.UtcNow.AddMinutes(30), true, account);
+
+            HttpCookie Cookie = new HttpCookie(FormsAuthentication.FormsCookieName, FormsAuthentication.Encrypt(ticket))
+            {
+                Expires = ticket.Expiration,
+                HttpOnly = true,
+                Path = string.IsNullOrWhiteSpace(ticket.CookiePath) ? FormsAuthentication.FormsCookiePath : ticket.CookiePath,
+                Secure = FormsAuthentication.RequireSSL
+            };
+
+            HttpContext.Current.Response.Cookies.Add(Cookie);
+            HttpContext.Current.Session["LoginAccount"] = account;
         }
 
         //密碼變更

@@ -152,11 +152,15 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\API\MemberAPIController.cs" />
     <Compile Include="Controllers\API\TestController.cs" />
-    <Compile Include="Controllers\API\MailAPI.cs" />
+    <Compile Include="Controllers\API\MailAPIController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Enum\MemberEnum.cs" />
+    <Compile Include="Enum\ResultCodeEnum.cs" />
+    <Compile Include="Enum\VerificationEnum.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helper\CommonHelper.cs" />
     <Compile Include="Helper\ConfigHelper.cs" />
     <Compile Include="Model\FriendList.cs">
       <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
@@ -188,6 +192,8 @@
     <Compile Include="Model\VerificationCode.cs">
       <DependentUpon>SocialNetworkDBModel.tt</DependentUpon>
     </Compile>
+    <Content Include="SqlScript\Table\VerificationCode.sql" />
+    <Content Include="SqlScript\Table\Member.sql" />
     <Compile Include="ViewModel\MailViewModel.cs" />
     <Compile Include="ViewModel\IndexViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />

@@ -85,7 +85,7 @@
                 background-color: #D68D8D;
             }
 
-        .btn_singup {
+        .btn_singup, .btn_info {
             width: 130px;
             height: 50px;
             font-size: 15pt;
@@ -95,7 +95,7 @@
             font-weight: 700;
         }
 
-            .btn_singup:hover {
+            .btn_singup:hover, .btn_info:hover {
                 border: 1px solid #FFFFFF;
             }
 
@@ -296,7 +296,7 @@
                 color: #D68D8D;
             }
 
-        .Error {
+        .Error, .Info {
             width: 300px;
             height: 200px;
         }
@@ -321,6 +321,18 @@
             margin-top: 10%;
             font-size: 15pt;
             color: #FF5A5A;
+            font-weight: 600;
+            text-align: center;
+            height: 80px;
+            align-items: center;
+        }
+
+        .InfoText {
+            display: flex;
+            justify-content: center;
+            margin-top: 10%;
+            font-size: 15pt;
+            color: black;
             font-weight: 600;
             text-align: center;
             height: 80px;
@@ -449,7 +461,7 @@
 
             <!--忘記密碼-->
             <div id="forgotPassword" class="forgotPassword">
-                <input class="btn_forgotPassword" type="button" value="忘記密碼?" onclick="pop('forgotPassword', true)">
+                <input class="btn_forgotPassword" type="button" value="忘記密碼?" onclick="pop('forgotPassword')">
                 <div class="popLayer"></div>
                 <div class="popBox forgotPasswordWindow">
                     <div class="topBar">
@@ -461,7 +473,7 @@
 
             <!--登入-->
             <div class="btn_div">
-                <div><input class="btn_loginPage" type="button" value="登入" onclick="login()"></div>
+                <div><input class="btn_loginPage" type="button" value="登入" onclick="Login()"></div>
             </div>
             <div id="loginError">
                 <div class="popLayer"></div>
@@ -485,7 +497,7 @@
 
             <!--註冊-->
             <div class="btn_div" id="signup">
-                <div><input class="btn_loginPage" type="button" value="新會員註冊" onclick="pop('signup', true)"></div>
+                <div><input class="btn_loginPage" type="button" value="新會員註冊" onclick="pop('signup')"></div>
                 <div class="popLayer"></div>
                 <div class="popBox signupStyle">
                     <div class="topBar">
@@ -541,8 +553,8 @@
                             </div>
                         </div>
                         <div style="display:flex; align-items:center;">
-                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;" onkeyup="RemoveErrorInput(this.id)">
-                            <input class="btn_Verification" type="button" value="取得驗證碼" onclick="MailSend()">
+                            <input class="input_sinup" type="text" placeholder="請輸入有效電子郵件" id="singup_mail" autocomplete="off" maxlength="100" style="width: 310px; margin-right:5px;" onkeyup="RemoveErrorInput(this.id)">
+                            <input class="btn_Verification" type="button" value="取得驗證碼" onclick="SendAuthCode()">
                         </div>
                     </div>
                     <div class="linediv"><div class="lineStyle"></div></div>
@@ -563,12 +575,21 @@
                     </div>
                 </div>
             </div>
-            <div id="supingError">
+            <div id="PopupError">
                 <div class="popLayer"></div>
                 <div class="popBox Error">
-                    <a class="ErrorText" id="singErrorText"></a>
+                    <a class="ErrorText" id="ErrorText"></a>
                     <div class="btn_div">
-                        <input class="btn_Error" type="button" value="確認" onclick="pop('supingError', false)">
+                        <input class="btn_Error" type="button" value="確認" onclick="pop('PopupError', false)">
+                    </div>
+                </div>
+            </div>
+            <div id="PopupInfo">
+                <div class="popLayer"></div>
+                <div class="popBox Info">
+                    <a class="InfoText" id="InfoText"></a>
+                    <div class="btn_div">
+                        <input class="btn_info" type="button" value="確認">
                     </div>
                 </div>
             </div>
@@ -584,7 +605,7 @@
 
             <!--會員資料填寫-->
             <div class="btn_div" id="MemberInfo">
-                <div><input class="btn_loginPage" type="button" value="會員資料POPTest" onclick="pop('MemberInfo', true)"></div>
+                <div><input class="btn_loginPage" type="button" value="會員資料POPTest" onclick="pop('MemberInfo')"></div>
                 <div class="popLayer"></div>
                 <div class="popBox InfoStyle">
                     <div class="topBar">
@@ -648,221 +669,187 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        /*SVG元素控制*/
-        jQuery('img.svg').each(function () {
-            var $img = jQuery(this);
-            var imgID = $img.attr('id');
-            var imgClass = $img.attr('class');
-            var imgURL = $img.attr('src');
-
-            jQuery.get(imgURL, function (data) {
-                // Get the SVG tag, ignore the rest
-                var $svg = jQuery(data).find('svg');
-
-                // Add replaced image's ID to the new SVG
-                if (typeof imgID !== 'undefined') {
-                    $svg = $svg.attr('id', imgID);
-                }
-                // Add replaced image's classes to the new SVG
-                if (typeof imgClass !== 'undefined') {
-                    $svg = $svg.attr('class', imgClass + ' replaced-svg');
-                }
-
-                // Remove any invalid XML tags as per http://validator.w3.org
-                $svg = $svg.removeAttr('xmlns:a');
-
-                // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
-                if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
-                    $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
-                }
-
-                // Replace image with new SVG
-                $img.replaceWith($svg);
-
-            }, 'xml');
-
-        });
-
-        $(document).ready(() => {
-            //進網頁先載入API
-        });
-
-        function login() {
-            $.post("/API/MemberAPI/LoginV2",
-                {
-                    Account: $("#account").val(),
-                    Password: $("#password").val()
-                },
-                (res) => {
-                    if (res.ResultCode == 1)
-                        // 導主頁
-                        window.location.href = "/Home/Index";
-                    else
-                        pop('loginError', true);
-                }
-            );
-        };
-
-        /**
-         * 移除 class input-error
-         * @@param id HtmlID
-         */
-        function RemoveErrorInput(id) {
-            $('#' + id).removeClass('input-error');
-        }
-
-        /** 註冊 */
-        function Singup() {
-            let errorMsg = {
-                singup_name: '您尚未填寫 會員名稱',
-                singup_account: '您尚未填寫 會員帳號',
-                singup_password: '您尚未填寫 會員密碼',
-                singup_passwordCheck: '您尚未填寫 確認密碼',
-                mail: '您尚未填寫 電子郵件',
-                singup_Vcode: '您尚未填寫 驗證碼'
-            };
-
-            let error = '';
-
-            // 前端檢查欄位
-            Object.keys(errorMsg).forEach(key => {
-                if (!error && !$('#' + key).val()) {
-                    $('#' + key).removeClass('input-error');
-
-                    error = errorMsg[key];
-                    $('#' + key).addClass('input-error');
-                }
-            });
-
-            if (!error) {
-                let regexAccountValidation = new RegExp('^.[A-Za-z0-9]+$');
-                if ($("#singup_account").val().length < 6 || !regexAccountValidation.test($("#singup_account").val())) {
-                    error = '會員帳號需至少為6碼的英數字';
-                    $('#singup_account').addClass('input-error');
-                }
-                else if ($("#singup_password").val() != $("#singup_passwordCheck").val()) {
-                    error = '會員密碼與確認密碼不相符';
-                    $('#singup_password').addClass('input-error');
-                    $('#singup_passwordCheck').addClass('input-error');
-                }
-            }
-
-            if (error) {
-                pop('supingError', true);
-                $('#singErrorText').html(error);
-                return;
-            }
-
-            //串註冊API
-            $.post("/API/MemberAPI/Singup",
-                {
-                    nickName: $("#singup_name").val(),
-                    Account: $("#singup_account").val(),
-                    Password: $("#singup_password").val(),
-                    PasswordCheck: $("#singup_passwordCheck").val(),
-                    Mail: $("#mail").val(),
-                    VCode: $("#singup_Vcode").val()
-                },
-                (res) => {
-                    if (res.ResultCode == 1) {
-                        alert(res.Message);
-                        pop('MemberInfo', true);
-                    }
-                    else {
-                        alert(res.Message);
-                    }
-                }
-            );
-        };
-
-        /*POP*/
-        function pop(containerID, ispop) {
-            var popBox = $('#' + containerID + '> .popBox')[0];
-            var popLayer = $('#' + containerID + '> .popLayer')[0];
-            popBox.style.display = popLayer.style.display = ispop ? "block" : "none";
-        }
-
-        /*測試用*/
-        function dateTest() {
-            $.post("/API/MemberAPI/Datetest",
-                {
-                    Brithdate: $('#Birth').val()
-                },
-                (res) => {
-                    if (res.ResultCode == 1)
-                        // 導主頁
-                        alert(res.Message);
-                    else
-                        alert(res.Message);
-                }
-            );
-        }
-
-        /*日期選擇元件*/
-        $(function () {
-            $("#datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                showMonthAfterYear: true,
-                yearRange: '1950:2022',
-                onSelect: function (dateText, inst) {
-                    $("#year").val(inst.selectedYear);
-                    $("#month").val(inst.selectedMonth + 1);
-                    $("#day").val(inst.selectedDay);
-                }
-            });
-            $("#datepicker").on('change', function () {
-                $(this).val("")
-            });
-            $.datepicker.regional['zh-TW'] = {
-                dayNames: ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"],
-                dayNamesMin: ["日", "一", "二", "三", "四", "五", "六"],
-                monthNames: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                monthNamesShort: ["一月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"],
-                prevText: "上月",
-                nextText: "次月",
-                weekHeader: "週"
-            };
-            $.datepicker.setDefaults($.datepicker.regional["zh-TW"]);
-        });
-
-        /*會員資料公開或隱藏*/
-        var infoSum = 15;
-        function InfoDate(e) {
-            var hideImage = "/Image/InfoHide.png";
-            var publicImage = "/Image/InfoPublic.png";
-            var infoNumber = e.id.slice(-1);
-            e.src = e.src.includes(publicImage) ? hideImage : publicImage;
-            infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum - Number(infoNumber);
-        };
-
-        function InfoNumber() {
-            var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();
-            var internest = $('#infoInternest').val();
-            var job = $('#infoJob').val();
-            var education = $('#infoEducation').val();
-            alert(infoSum + '\n' + birthday + '\n' + internest + '\n' + job + '\n' + education);
-        }
-
-        /*寄驗證碼到Mail*/
-        function MailSend() {
-            if ($("#mail").val() == null || $("#mail").val() == "") {
-                pop('MailError', true);
-            }
-            $.post("/API/MailAPI/CheckMail",
-                {
-                    Mail: $('#mail').val()
-                },
-                (res) => {
-                    if (res.ResultCode == 1)
-                        alert(res.Message);
-                    else
-                        pop('MailError', true);
-                    //alert(res.Message);
-                }
-            );
-        }
-    </script>
 </body>
 </html>
+
+<script type="text/javascript">
+    /*SVG元素控制*/
+    jQuery('img.svg').each(function () {
+        var $img = jQuery(this);
+        var imgID = $img.attr('id');
+        var imgClass = $img.attr('class');
+        var imgURL = $img.attr('src');
+
+        jQuery.get(imgURL, function (data) {
+            // Get the SVG tag, ignore the rest
+            var $svg = jQuery(data).find('svg');
+
+            // Add replaced image's ID to the new SVG
+            if (typeof imgID !== 'undefined') {
+                $svg = $svg.attr('id', imgID);
+            }
+            // Add replaced image's classes to the new SVG
+            if (typeof imgClass !== 'undefined') {
+                $svg = $svg.attr('class', imgClass + ' replaced-svg');
+            }
+
+            // Remove any invalid XML tags as per http://validator.w3.org
+            $svg = $svg.removeAttr('xmlns:a');
+
+            // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
+            if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+                $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'))
+            }
+
+            // Replace image with new SVG
+            $img.replaceWith($svg);
+
+        }, 'xml');
+
+    });
+
+    $(document).ready(() => {
+        /*日期選擇元件*/
+        datepickerInit();
+    });
+
+    function Login() {
+        $.post("/API/MemberAPI/Login",
+            {
+                Account: $("#account").val(),
+                Password: $("#password").val()
+            },
+            (res) => {
+                if (res.ResultCode == 1)
+                    // 導主頁
+                    window.location.href = "/Home/Index";
+                else
+                    pop('loginError');
+            }
+        );
+    };
+
+    /** 註冊 */
+    function Singup() {
+        let errorMsg = {
+            singup_name: '您尚未填寫 會員名稱',
+            singup_account: '您尚未填寫 會員帳號',
+            singup_password: '您尚未填寫 會員密碼',
+            singup_passwordCheck: '您尚未填寫 確認密碼',
+            singup_mail: '您尚未填寫 電子郵件',
+            singup_Vcode: '您尚未填寫 驗證碼'
+        };
+
+        let error = '';
+
+        // 前端欄位基礎驗證
+        Object.keys(errorMsg).forEach(key => {
+            if (!error && !$('#' + key).val()) {
+                $('#' + key).removeClass('input-error');
+
+                error = errorMsg[key];
+                $('#' + key).addClass('input-error');
+            }
+        });
+
+        // 驗證特殊邏輯
+        if (!error) {
+            let regexAccountValidation = new RegExp('^.[A-Za-z0-9]+$');
+            if ($("#singup_account").val().length < 6 || !regexAccountValidation.test($("#singup_account").val())) {
+                error = '會員帳號需至少為6碼的英數字';
+                $('#singup_account').addClass('input-error');
+            }
+            else if ($("#singup_password").val() != $("#singup_passwordCheck").val()) {
+                error = '會員密碼與確認密碼不相符';
+                $('#singup_password').addClass('input-error');
+                $('#singup_passwordCheck').addClass('input-error');
+            }
+        }
+
+        if (error) {
+            $('#ErrorText').html(error);
+            pop('PopupError');
+            return;
+        }
+
+        //串註冊API
+        $.post("/API/MemberAPI/Singup",
+            {
+                nickName: $("#singup_name").val(),
+                Account: $("#singup_account").val(),
+                Password: $("#singup_password").val(),
+                PasswordCheck: $("#singup_passwordCheck").val(),
+                Mail: $("#singup_mail").val(),
+                VCode: $("#singup_Vcode").val()
+            },
+            (res) => {
+                if (res.ResultCode == 1) {
+                    $('#InfoText').html(res.Message);
+                    pop('PopupInfo');
+
+                    $('.btn_info').click(() => pop('PopupInfo', false, () => pop('MemberInfo')));
+                }
+                else {
+                    $('#ErrorText').html(res.Message);
+                    pop('PopupError');
+                }
+            }
+        );
+    };
+
+    /*測試用*/
+    function dateTest() {
+        $.post("/API/MemberAPI/Datetest",
+            {
+                Brithdate: $('#Birth').val()
+            },
+            (res) => {
+                if (res.ResultCode == 1)
+                    // 導主頁
+                    alert(res.Message);
+                else
+                    alert(res.Message);
+            }
+        );
+    }
+
+    /*會員資料公開或隱藏*/
+    var infoSum = 15;
+    function InfoDate(e) {
+        var hideImage = "/Image/InfoHide.png";
+        var publicImage = "/Image/InfoPublic.png";
+        e.src = e.src.includes(publicImage) ? hideImage : publicImage;
+
+        var infoNumber = e.id.slice(-1);
+        infoSum = e.src.includes(publicImage) ? infoSum + Number(infoNumber) : infoSum - Number(infoNumber);
+    };
+
+    function InfoNumber() {
+        var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();
+        var internest = $('#infoInternest').val();
+        var job = $('#infoJob').val();
+        var education = $('#infoEducation').val();
+        alert(infoSum + '\n' + birthday + '\n' + internest + '\n' + job + '\n' + education);
+    }
+
+    /*寄驗證碼到Mail*/
+    function SendAuthCode() {
+        $.post("/API/MailAPI/SendVCode",
+            {
+                Mail: $('#singup_mail').val()
+            },
+            (res) => {
+                if (res.ResultCode == 1) {
+                    $('#InfoText').html(res.Message);
+                    pop('PopupInfo');
+                    $('.btn_info').click(() => pop('PopupInfo', false));
+                }
+                else {
+                    $('#ErrorText').html(res.Message);
+                    $('#singup_mail').addClass('input-error');
+                    pop('PopupError');
+                }
+            }
+        );
+    }
+</script>

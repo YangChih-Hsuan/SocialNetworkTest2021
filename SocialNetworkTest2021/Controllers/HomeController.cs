@@ -49,6 +49,7 @@ namespace SocialNetworkTest2021.Controllers
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();

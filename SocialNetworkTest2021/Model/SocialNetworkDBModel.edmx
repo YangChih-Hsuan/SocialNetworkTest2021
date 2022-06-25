@@ -21,7 +21,7 @@
           <Property Name="MemberID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Account" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="NickName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="500" Nullable="false" />
           <Property Name="Mail" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="Birthday" Type="date" />
           <Property Name="Interest" Type="nvarchar" MaxLength="300" />
@@ -56,12 +56,14 @@
         </EntityType>
         <EntityType Name="VerificationCode">
           <Key>
-            <PropertyRef Name="Number" />
+            <PropertyRef Name="Key" />
           </Key>
-          <Property Name="Number" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Key" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mail" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="VCode" Type="char" MaxLength="10" Nullable="false" />
           <Property Name="Status" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" Nullable="false" />
+          <Property Name="VerificationDate" Type="datetime" />
         </EntityType>
         <EntityContainer Name="SocialNetworkTest2021ModelStoreContainer">
           <EntitySet Name="FriendList" EntityType="Self.FriendList" Schema="dbo" store:Type="Tables" />
@@ -81,7 +83,7 @@
           <Property Name="MemberID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Account" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="NickName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Mail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Birthday" Type="DateTime" Precision="0" />
@@ -132,12 +134,14 @@
         </EntityType>
         <EntityType Name="VerificationCode">
           <Key>
-            <PropertyRef Name="Number" />
+            <PropertyRef Name="Key" />
           </Key>
-          <Property Name="Number" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="VCode" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
           <Property Name="Status" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Key" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="VerificationDate" Type="DateTime" Precision="3" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -200,10 +204,12 @@
           <EntitySetMapping Name="VerificationCode">
             <EntityTypeMapping TypeName="SocialNetworkTest2021Model.VerificationCode">
               <MappingFragment StoreEntitySet="VerificationCode">
+                <ScalarProperty Name="VerificationDate" ColumnName="VerificationDate" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
                 <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="VCode" ColumnName="VCode" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
